@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "contingency-respondent-dsl"
 version = "0.0.0"
-description = "Tier B Pavlovian (respondent) procedure extension for contingency-dsl. Provides 26 Pavlovian conditioning primitives (blocking, overshadowing, latent inhibition, renewal, reinstatement, etc.) that plug into the contingency-dsl Core via the Respondent extension point. Specification-only at this design checkpoint; a parser is a separate follow-on effort."
+description = "Tier B Pavlovian (respondent) procedure extension for contingency-dsl. Provides 26 Pavlovian conditioning primitives (blocking, overshadowing, latent inhibition, renewal, reinstatement, etc.) that plug into the contingency-dsl Core via the Respondent extension point."
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
@@ -27,12 +27,29 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Topic :: Scientific/Engineering",
 ]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "pytest-cov",
+]
+# contingency-dsl-py is a sibling package providing the Core parser. Once
+# both packages are published, list it here as a normal dependency. For
+# local development, install it from the sibling checkout with:
+#     .venv/bin/pip install -e ../contingency-dsl-py
+# It is not required to exercise this package's own unit tests, which
+# operate on pre-evaluated keyword arguments at the extension boundary.
 
 [project.urls]
 "Parent DSL" = "https://github.com/operantkit/contingency-dsl"
 
 [tool.setuptools]
-# No Python package yet — this is a spec-only design checkpoint.
-# A Python implementation (parser + registry) is a separate follow-on.
-packages = []
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
