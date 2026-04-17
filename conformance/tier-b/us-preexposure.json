@@ -3,8 +3,20 @@
     "id": "us-preexposure-basic",
     "comment": "Randich & LoLordo (1979) US preexposure effect: shock preexposed before tone-shock pairing.",
     "input": "USPreexposure(preexposure = USOnly(shock, trials=40), training = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), test = Extinction(tone), preexposure_trials = 40, training_trials = 40)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "USPreexposure",
+      "preexposure": {"type": "USOnly", "us": "shock", "trials": 40},
+      "training": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "test": {"type": "Extinction", "cs": "tone"},
+      "preexposure_trials": 40,
+      "training_trials": 40
+    }
   }
 ]
 

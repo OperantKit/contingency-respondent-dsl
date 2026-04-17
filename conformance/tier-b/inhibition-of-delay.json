@@ -3,8 +3,14 @@
     "id": "inhibition-of-delay-basic",
     "comment": "Long-ISI forward-delay producing inhibition of early-interval responding.",
     "input": "InhibitionOfDelay(cs = tone, us = shock, cs_duration = 60-s, isi = 45-s, training_trials = 200)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "InhibitionOfDelay",
+      "cs": "tone",
+      "us": "shock",
+      "cs_duration": {"value": 60, "unit": "s"},
+      "isi": {"value": 45, "unit": "s"},
+      "training_trials": 200
+    }
   }
 ]
 

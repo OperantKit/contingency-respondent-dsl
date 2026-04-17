@@ -3,8 +3,29 @@
     "id": "super-conditioning-basic",
     "comment": "Rescorla (1971): first establish I as conditioned inhibitor, then compound IX with US.",
     "input": "SuperConditioning(phase1_inhibitor = ConditionedInhibition(training = Pair.ForwardDelay(a, shock, isi=10-s, cs_duration=15-s), test = Extinction(i), training_trials = 40), phase2_target = Pair.ForwardDelay(Compound([i, x]), shock, isi=10-s, cs_duration=15-s), test = Extinction(x))",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented. Nested Tier B primitive (ConditionedInhibition) as phase1_inhibitor argument."
+    "expected_ast": {
+      "type": "SuperConditioning",
+      "phase1_inhibitor": {
+        "type": "ConditionedInhibition",
+        "training": {
+          "type": "Pair.ForwardDelay",
+          "cs": "a",
+          "us": "shock",
+          "isi": {"value": 10, "unit": "s"},
+          "cs_duration": {"value": 15, "unit": "s"}
+        },
+        "test": {"type": "Extinction", "cs": "i"},
+        "training_trials": 40
+      },
+      "phase2_target": {
+        "type": "Pair.ForwardDelay",
+        "cs": {"type": "Compound", "elements": ["i", "x"]},
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "test": {"type": "Extinction", "cs": "x"}
+    }
   }
 ]
 

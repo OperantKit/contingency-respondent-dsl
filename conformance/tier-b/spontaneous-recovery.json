@@ -3,8 +3,19 @@
     "id": "spontaneous-recovery-24h",
     "comment": "Acquisition, extinction, 24-hour retention interval, test.",
     "input": "SpontaneousRecovery(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), extinction = Extinction(tone), retention_interval = 1440-min, test = Extinction(tone))",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented. retention_interval uses the Core Duration format."
+    "expected_ast": {
+      "type": "SpontaneousRecovery",
+      "acquisition": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "extinction": {"type": "Extinction", "cs": "tone"},
+      "retention_interval": {"value": 1440, "unit": "min"},
+      "test": {"type": "Extinction", "cs": "tone"}
+    }
   }
 ]
 

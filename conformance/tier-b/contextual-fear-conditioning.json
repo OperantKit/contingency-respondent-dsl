@@ -3,8 +3,13 @@
     "id": "contextual-fear-conditioning-one-trial",
     "comment": "Fanselow (1990): context itself is the CS; 180 s entry-to-shock interval.",
     "input": "ContextualFearConditioning(context = \"ctx_shock\", us = footshock, us_onset_from_entry = 180-s, training_trials = 1)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "ContextualFearConditioning",
+      "context": "ctx_shock",
+      "us": "footshock",
+      "us_onset_from_entry": {"value": 180, "unit": "s"},
+      "training_trials": 1
+    }
   }
 ]
 

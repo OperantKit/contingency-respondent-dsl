@@ -3,8 +3,31 @@
     "id": "overexpectation-basic",
     "comment": "Rescorla (1970): A and B separately paired with US to asymptote, then AB compound with same US.",
     "input": "Overexpectation(phase1_a = Pair.ForwardDelay(a, shock, isi=10-s, cs_duration=15-s), phase1_b = Pair.ForwardDelay(b, shock, isi=10-s, cs_duration=15-s), phase2_compound = Pair.ForwardDelay(Compound([a, b]), shock, isi=10-s, cs_duration=15-s), test = Extinction(a))",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "Overexpectation",
+      "phase1_a": {
+        "type": "Pair.ForwardDelay",
+        "cs": "a",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "phase1_b": {
+        "type": "Pair.ForwardDelay",
+        "cs": "b",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "phase2_compound": {
+        "type": "Pair.ForwardDelay",
+        "cs": {"type": "Compound", "elements": ["a", "b"]},
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "test": {"type": "Extinction", "cs": "a"}
+    }
   }
 ]
 

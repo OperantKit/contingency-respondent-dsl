@@ -3,8 +3,24 @@
     "id": "mediated-conditioning-flavor-lithium",
     "comment": "Holland (1981) representation-mediated food aversion: tone-flavor, then tone-lithium, test flavor.",
     "input": "MediatedConditioning(phase1 = Pair.ForwardDelay(tone, flavor, isi=5-s, cs_duration=10-s), phase2 = Pair.ForwardDelay(tone, lithium, isi=5-s, cs_duration=10-s), test = CSOnly(flavor, trials=8))",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "MediatedConditioning",
+      "phase1": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "flavor",
+        "isi": {"value": 5, "unit": "s"},
+        "cs_duration": {"value": 10, "unit": "s"}
+      },
+      "phase2": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "lithium",
+        "isi": {"value": 5, "unit": "s"},
+        "cs_duration": {"value": 10, "unit": "s"}
+      },
+      "test": {"type": "CSOnly", "cs": "flavor", "trials": 8}
+    }
   }
 ]
 

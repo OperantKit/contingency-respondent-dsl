@@ -3,8 +3,19 @@
     "id": "pavlovian-pree-50pct",
     "comment": "Partial-reinforcement extinction effect: 50% reinforcement during acquisition.",
     "input": "PavlovianPREE(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), extinction = Extinction(tone), test = Extinction(tone), reinforcement_probability = 0.5)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "PavlovianPREE",
+      "acquisition": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "extinction": {"type": "Extinction", "cs": "tone"},
+      "test": {"type": "Extinction", "cs": "tone"},
+      "reinforcement_probability": 0.5
+    }
   }
 ]
 

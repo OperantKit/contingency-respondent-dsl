@@ -3,8 +3,25 @@
     "id": "higher-order-conditioning-basic",
     "comment": "Classical two-phase higher-order conditioning: tone paired with shock, then light paired with tone.",
     "input": "HigherOrderConditioning(phase1 = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), phase2 = Pair.ForwardDelay(light, tone, isi=5-s, cs_duration=10-s), phase1_trials = 40, phase2_trials = 20)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented. Should produce a HigherOrderConditioning node with nested PairForwardDelay nodes for phase1 and phase2, plus trial counts."
+    "expected_ast": {
+      "type": "HigherOrderConditioning",
+      "phase1": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "phase2": {
+        "type": "Pair.ForwardDelay",
+        "cs": "light",
+        "us": "tone",
+        "isi": {"value": 5, "unit": "s"},
+        "cs_duration": {"value": 10, "unit": "s"}
+      },
+      "phase1_trials": 40,
+      "phase2_trials": 20
+    }
   }
 ]
 
