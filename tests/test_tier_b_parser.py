@@ -198,3 +198,42 @@ def test_latent_inhibition_trials_optional():
     assert "preexposure_trials" not in serialized
     assert "training_trials" not in serialized
 
+
+# ---------------------------------------------------------------------------
+# Overshadowing — compound-stimulus training with symmetric element tests
+# ---------------------------------------------------------------------------
+
+
+def test_overshadowing_full_roundtrip():
+    compound_training = {
+        "type": "Pair.ForwardDelay",
+        "cs": {
+            "type": "Compound",
+            "elements": ["loud_tone", "dim_light"],
+        },
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"},
+    }
+    node = parse_primitive(
+        "Overshadowing",
+        None,
+        {
+            "training": compound_training,
+            "test_a": {"type": "Extinction", "cs": "loud_tone"},
+            "test_b": {"type": "Extinction", "cs": "dim_light"},
+            "training_trials": 40,
+        },
+    )
+    assert isinstance(node, tier_b_ast.Overshadowing)
+    assert node.training_trials == 40
+    assert node.test_a == {"type": "Extinction", "cs": "loud_tone"}
+    assert node.test_b == {"type": "Extinction", "cs": "dim_light"}
+
+    serialized = to_dict(node)
+    assert serialized["type"] == "Overshadowing"
+    # Compound-typed CS preserved inside the training expression
+    assert serialized["training"]["cs"]["type"] == "Compound"
+    assert serialized["training"]["cs"]["elements"] == ["loud_tone", "dim_light"]
+    _roundtrip_equal(node)
+
