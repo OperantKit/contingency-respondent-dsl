@@ -74,17 +74,97 @@ contingency-respondent-dsl/
 
 ## Status
 
-This package is a **specification-only design checkpoint**. It provides:
+This package currently provides:
 
 - The EBNF productions for 26 Pavlovian procedures that extend Core's
-  `ExtensionRespondentPrimitive`.
-- A JSON Schema (2020-12) for the resulting AST nodes.
+  `ExtensionRespondentPrimitive` (see [`spec/en/grammar.md`](spec/en/grammar.md)).
+- A JSON Schema for the resulting AST nodes
+  (see [`schema/ast.schema.json`](schema/ast.schema.json)).
 - Per-primitive operational definitions with primary APA citations.
-- Conformance fixture skeletons suitable for use once a parser exists.
+- A Python parser skeleton (`src/contingency_respondent_dsl/`) with:
+  - Frozen dataclasses for all 26 primitives (`ast.py`).
+  - A registry that dispatches identifier + keyword-args bags to AST
+    constructors (`registry.py`).
+  - A dict serializer compatible with the AST schema (`serializer.py`).
+  - A thin `parse_primitive()` entrypoint (`parser.py`).
+- Conformance fixtures for 5 demonstration primitives (blocking, renewal,
+  latent inhibition, overshadowing, reinstatement) with concrete
+  `expected_ast` dicts. The remaining 21 fixtures have populated `input`
+  strings but retain `expected_ast: null` until their argument schemas
+  are exercised end-to-end through the parser.
 
-A Python parser implementation, a runtime registry, and a conformance
-validator are **not** part of this checkpoint; they are separate follow-on
-efforts. No installation instructions are provided at this time.
+## Installation (for local development)
+
+This package uses `mise` + `venv` per the upstream OperantKit policy. `uv`
+is not used.
+
+```sh
+# From inside contingency-respondent-dsl/
+mise exec -- python -m venv .venv
+.venv/bin/python -m pip install -e .
+.venv/bin/python -m pip install pytest
+.venv/bin/pytest tests/ -q
+```
+
+The Core parser (`contingency-dsl-py`) is a separate sibling package and
+is not required to exercise this package's own unit tests: the Tier B
+parser operates on already-evaluated keyword arguments at the extension
+boundary, and nested Tier A expressions are treated as opaque dicts on
+that boundary.
+
+## Usage
+
+```python
+from contingency_respondent_dsl import (
+    parse_primitive,
+    to_dict,
+    from_dict,
+)
+
+node = parse_primitive(
+    "Blocking",
+    positional_args=[],
+    keyword_args={
+        "phase1": {"type": "Pair.ForwardDelay", "cs": "a", "us": "shock"},
+        "phase2": {
+            "type": "Pair.ForwardDelay",
+            "cs": {"type": "Compound", "elements": ["a", "x"]},
+            "us": "shock",
+        },
+        "test":   {"type": "Extinction", "cs": "x"},
+        "phase1_trials": 40,
+        "phase2_trials": 20,
+        "test_trials":   10,
+    },
+)
+# node is a frozen contingency_respondent_dsl.ast.Blocking instance
+
+serialized = to_dict(node)  # -> schema-shaped dict
+restored   = from_dict(serialized)
+assert restored == node
+```
+
+To attach the Tier B extension to a registry-like object:
+
+```python
+from contingency_respondent_dsl import register
+
+bag: dict = {}
+ext = register(bag)   # dict: stores ext under "respondent-tier-b"
+ext.parse_primitive("Renewal", None, { ... })
+```
+
+The `register()` helper accepts a dict, any object exposing a
+`register_tier_b(ext)` method, or a plain namespace.
+
+### Coverage status
+
+All 26 primitive identifiers are registered (unknown identifiers raise
+`UnknownPrimitiveError`). End-to-end parse paths are validated for 5
+demonstration primitives; AST classes for the remaining 21 are defined
+and registered but their round-trip paths are exercised only through
+`from_dict` / `to_dict` in the conformance runner as their fixtures are
+populated.
 
 ## Navigation
 
