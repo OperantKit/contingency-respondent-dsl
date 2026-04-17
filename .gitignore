@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+
+# Virtualenv / build artifacts
+.venv/
+dist/
+build/
+
+# Editor / OS
+.DS_Store
+.env
+
+# Scratch / drafts / planning — gitignored per operantkit policy
+.local/
+tmp/
+PLAN.md
+
