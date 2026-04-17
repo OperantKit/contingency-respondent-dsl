@@ -3,8 +3,19 @@
     "id": "reinstatement-basic",
     "comment": "Rescorla & Heth (1975): acquisition, extinction, US-alone reinstatement, test.",
     "input": "Reinstatement(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), extinction = Extinction(tone), reinstatement_us = USOnly(shock, trials=4), test = Extinction(tone))",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "Reinstatement",
+      "acquisition": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "extinction": {"type": "Extinction", "cs": "tone"},
+      "reinstatement_us": {"type": "USOnly", "us": "shock", "trials": 4},
+      "test": {"type": "Extinction", "cs": "tone"}
+    }
   }
 ]
 

@@ -3,8 +3,19 @@
     "id": "overshadowing-basic",
     "comment": "Compound AB with asymmetric salience; test each element alone.",
     "input": "Overshadowing(training = Pair.ForwardDelay(Compound([loud_tone, dim_light]), shock, isi=10-s, cs_duration=15-s), test_a = Extinction(loud_tone), test_b = Extinction(dim_light), training_trials = 40)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented. Overshadowing node with Compound-typed CS in training and two Extinction tests."
+    "expected_ast": {
+      "type": "Overshadowing",
+      "training": {
+        "type": "Pair.ForwardDelay",
+        "cs": {"type": "Compound", "elements": ["loud_tone", "dim_light"]},
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "test_a": {"type": "Extinction", "cs": "loud_tone"},
+      "test_b": {"type": "Extinction", "cs": "dim_light"},
+      "training_trials": 40
+    }
   }
 ]
 

@@ -3,8 +3,21 @@
     "id": "renewal-aba",
     "comment": "ABA renewal: acquire in ctx_a, extinguish in ctx_b, test back in ctx_a.",
     "input": "Renewal(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), extinction = Extinction(tone), test = Extinction(tone), acquisition_context = \"ctx_a\", extinction_context = \"ctx_b\", test_context = \"ctx_a\")",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented. Three ContextRef fields distinguish ABA from ABC or AAB."
+    "expected_ast": {
+      "type": "Renewal",
+      "acquisition": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "extinction": {"type": "Extinction", "cs": "tone"},
+      "test": {"type": "Extinction", "cs": "tone"},
+      "acquisition_context": "ctx_a",
+      "extinction_context": "ctx_b",
+      "test_context": "ctx_a"
+    }
   }
 ]
 

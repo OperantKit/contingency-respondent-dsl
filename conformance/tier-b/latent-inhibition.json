@@ -3,8 +3,20 @@
     "id": "latent-inhibition-basic",
     "comment": "Lubow & Moore (1959) latent inhibition: tone preexposed then paired with shock.",
     "input": "LatentInhibition(preexposure = CSOnly(tone, trials=80), training = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), test = Extinction(tone), preexposure_trials = 80, training_trials = 40)",
-    "expected_ast": null,
-    "todo": "Fill once parser is implemented."
+    "expected_ast": {
+      "type": "LatentInhibition",
+      "preexposure": {"type": "CSOnly", "cs": "tone", "trials": 80},
+      "training": {
+        "type": "Pair.ForwardDelay",
+        "cs": "tone",
+        "us": "shock",
+        "isi": {"value": 10, "unit": "s"},
+        "cs_duration": {"value": 15, "unit": "s"}
+      },
+      "test": {"type": "Extinction", "cs": "tone"},
+      "preexposure_trials": 80,
+      "training_trials": 40
+    }
   }
 ]
 
