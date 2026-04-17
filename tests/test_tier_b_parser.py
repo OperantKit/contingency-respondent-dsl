@@ -237,3 +237,49 @@ def test_overshadowing_full_roundtrip():
     assert serialized["training"]["cs"]["elements"] == ["loud_tone", "dim_light"]
     _roundtrip_equal(node)
 
+
+# ---------------------------------------------------------------------------
+# Reinstatement — four-phase acq/ext/US-alone/test
+# ---------------------------------------------------------------------------
+
+
+def test_reinstatement_full_roundtrip():
+    import pytest
+
+    us_only = {"type": "USOnly", "us": "shock", "trials": 4}
+    node = parse_primitive(
+        "Reinstatement",
+        None,
+        {
+            "acquisition": TONE_SHOCK_PAIR,
+            "extinction": EXTINCTION_TONE,
+            "reinstatement_us": us_only,
+            "test": EXTINCTION_TONE,
+        },
+    )
+    assert isinstance(node, tier_b_ast.Reinstatement)
+    assert node.acquisition == TONE_SHOCK_PAIR
+    assert node.extinction == EXTINCTION_TONE
+    assert node.reinstatement_us == us_only
+    assert node.test == EXTINCTION_TONE
+
+    serialized = to_dict(node)
+    assert serialized["type"] == "Reinstatement"
+    # All four phase fields are required in the serialized output
+    for k in ("acquisition", "extinction", "reinstatement_us", "test"):
+        assert k in serialized
+    _roundtrip_equal(node)
+
+    # Missing a required phase raises
+    with pytest.raises(Exception):
+        parse_primitive(
+            "Reinstatement",
+            None,
+            {
+                "acquisition": TONE_SHOCK_PAIR,
+                "extinction": EXTINCTION_TONE,
+                "test": EXTINCTION_TONE,
+                # missing reinstatement_us
+            },
+        )
+
