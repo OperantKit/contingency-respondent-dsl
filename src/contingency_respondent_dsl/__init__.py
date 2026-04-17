@@ -8,5 +8,7 @@ boundary contract and ``spec/en/grammar.md`` for the Tier B productions.
 
 from __future__ import annotations
 
-__all__: list[str] = []
+from . import ast as ast
+
+__all__ = ["ast"]
 
