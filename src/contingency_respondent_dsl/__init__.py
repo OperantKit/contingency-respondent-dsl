@@ -19,6 +19,7 @@ which returns a :class:`~contingency_respondent_dsl.ast.Blocking` node.
 from __future__ import annotations
 
 from . import ast as ast
+from .parser import parse_primitive
 from .registry import (
     ArityError,
     DEFAULT_REGISTRY,
@@ -34,6 +35,7 @@ from .serializer import from_dict, to_dict
 
 __all__ = [
     "ast",
+    "parse_primitive",
     "ArityError",
     "DEFAULT_REGISTRY",
     "MissingFieldError",
