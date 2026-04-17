@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://operantkit.dev/contingency-respondent-dsl/schema/ast.schema.json",
+  "title": "contingency-respondent-dsl Tier B AST",
+  "description": "AST schema for 26 Tier B Pavlovian primitives that register through Core's ExtensionRespondentPrimitive extension point. Each primitive has a distinct 'type' discriminator. Shared types (StimulusRef, Duration, Probability, ContextRef, RespondentExpr) would normally be $ref'd from the Core schema; for this design-checkpoint they are declared inline to keep the file self-contained.",
+
+  "$defs": {
+    "TierBRespondentExpr": {
+      "description": "Root discriminator across the 26 Tier B primitives.",
+      "oneOf": [
+        { "$ref": "#/$defs/HigherOrderConditioning" },
+        { "$ref": "#/$defs/SensoryPreconditioning" },
+        { "$ref": "#/$defs/Counterconditioning" },
+        { "$ref": "#/$defs/Blocking" },
+        { "$ref": "#/$defs/Overshadowing" },
+        { "$ref": "#/$defs/Overexpectation" },
+        { "$ref": "#/$defs/SuperConditioning" },
+        { "$ref": "#/$defs/RetrospectiveRevaluation" },
+        { "$ref": "#/$defs/ConditionedInhibition" },
+        { "$ref": "#/$defs/OccasionSetting" },
+        { "$ref": "#/$defs/InhibitionOfDelay" },
+        { "$ref": "#/$defs/SummationRetardationTest" },
+        { "$ref": "#/$defs/LatentInhibition" },
+        { "$ref": "#/$defs/USPreexposure" },
+        { "$ref": "#/$defs/Renewal" },
+        { "$ref": "#/$defs/Reinstatement" },
+        { "$ref": "#/$defs/SpontaneousRecovery" },
+        { "$ref": "#/$defs/LatentExtinction" },
+        { "$ref": "#/$defs/PavlovianPREE" },
+        { "$ref": "#/$defs/ContextualExtinction" },
+        { "$ref": "#/$defs/ReconsolidationInterference" },
+        { "$ref": "#/$defs/ConditionedTasteAversion" },
+        { "$ref": "#/$defs/StimulusGeneralization" },
+        { "$ref": "#/$defs/ContextualFearConditioning" },
+        { "$ref": "#/$defs/PeakProcedure" },
+        { "$ref": "#/$defs/MediatedConditioning" }
+      ]
+    },
+
+    "StimulusRef": {
+      "description": "Reference to a stimulus. Identifier or string label.",
+      "type": "string"
+    },
+    "ContextRef": {
+      "description": "Reference to an experimental context. Identifier or string label.",
+      "type": "string"
+    },
+    "Duration": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "type": "string", "enum": ["s", "ms", "min", "h"] }
+      },
+      "required": ["value", "unit"],
+      "additionalProperties": false
+    },
+    "Probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "RespondentExpr": {
+      "description": "Any respondent expression (Tier A via Core, or Tier B via this package). Structural placeholder; full validation is cross-schema and handled at Phase 2.",
+      "type": "object"
+    },
+
+    "HigherOrderConditioning": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "HigherOrderConditioning" },
+        "phase1": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2": { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_trials": { "type": "integer", "minimum": 0 },
+        "phase2_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "phase1", "phase2"],
+      "additionalProperties": false
+    },
+
+    "SensoryPreconditioning": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "SensoryPreconditioning" },
+        "phase1": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2": { "$ref": "#/$defs/RespondentExpr" },
+        "test":   { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_trials": { "type": "integer", "minimum": 0 },
+        "phase2_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "phase1", "phase2", "test"],
+      "additionalProperties": false
+    },
+
+    "Counterconditioning": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "Counterconditioning" },
+        "phase1": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2": { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_trials": { "type": "integer", "minimum": 0 },
+        "phase2_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "phase1", "phase2"],
+      "additionalProperties": false
+    },
+
+    "Blocking": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "Blocking" },
+        "phase1": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2": { "$ref": "#/$defs/RespondentExpr" },
+        "test":   { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_trials": { "type": "integer", "minimum": 0 },
+        "phase2_trials": { "type": "integer", "minimum": 0 },
+        "test_trials":   { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "phase1", "phase2", "test"],
+      "additionalProperties": false
+    },
+
+    "Overshadowing": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "Overshadowing" },
+        "training": { "$ref": "#/$defs/RespondentExpr" },
+        "test_a":   { "$ref": "#/$defs/RespondentExpr" },
+        "test_b":   { "$ref": "#/$defs/RespondentExpr" },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "training", "test_a", "test_b"],
+      "additionalProperties": false
+    },
+
+    "Overexpectation": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "Overexpectation" },
+        "phase1_a":         { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_b":         { "$ref": "#/$defs/RespondentExpr" },
+        "phase2_compound":  { "$ref": "#/$defs/RespondentExpr" },
+        "test":             { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_trials":    { "type": "integer", "minimum": 0 },
+        "phase2_trials":    { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "phase1_a", "phase1_b", "phase2_compound", "test"],
+      "additionalProperties": false
+    },
+
+    "SuperConditioning": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "SuperConditioning" },
+        "phase1_inhibitor": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2_target":    { "$ref": "#/$defs/RespondentExpr" },
+        "test":             { "$ref": "#/$defs/RespondentExpr" }
+      },
+      "required": ["type", "phase1_inhibitor", "phase2_target", "test"],
+      "additionalProperties": false
+    },
+
+    "RetrospectiveRevaluation": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "RetrospectiveRevaluation" },
+        "phase1_compound": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2_element":  { "$ref": "#/$defs/RespondentExpr" },
+        "test":            { "$ref": "#/$defs/RespondentExpr" }
+      },
+      "required": ["type", "phase1_compound", "phase2_element", "test"],
+      "additionalProperties": false
+    },
+
+    "ConditionedInhibition": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "ConditionedInhibition" },
+        "training": { "$ref": "#/$defs/RespondentExpr" },
+        "test":     { "$ref": "#/$defs/RespondentExpr" },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "training", "test"],
+      "additionalProperties": false
+    },
+
+    "OccasionSetting": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "OccasionSetting" },
+        "feature": { "$ref": "#/$defs/StimulusRef" },
+        "target":  { "$ref": "#/$defs/StimulusRef" },
+        "us":      { "$ref": "#/$defs/StimulusRef" },
+        "mode":    { "type": "string", "enum": ["FeaturePositive", "FeatureNegative"] },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "feature", "target", "us", "mode"],
+      "additionalProperties": false
+    },
+
+    "InhibitionOfDelay": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "InhibitionOfDelay" },
+        "cs": { "$ref": "#/$defs/StimulusRef" },
+        "us": { "$ref": "#/$defs/StimulusRef" },
+        "cs_duration": { "$ref": "#/$defs/Duration" },
+        "isi":         { "$ref": "#/$defs/Duration" },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "cs", "us", "cs_duration", "isi"],
+      "additionalProperties": false
+    },
+
+    "SummationRetardationTest": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "SummationRetardationTest" },
+        "inhibitor": { "$ref": "#/$defs/StimulusRef" },
+        "excitor":   { "$ref": "#/$defs/StimulusRef" },
+        "us":        { "$ref": "#/$defs/StimulusRef" },
+        "mode":      { "type": "string", "enum": ["Summation", "Retardation"] }
+      },
+      "required": ["type", "inhibitor", "excitor", "us", "mode"],
+      "additionalProperties": false
+    },
+
+    "LatentInhibition": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "LatentInhibition" },
+        "preexposure": { "$ref": "#/$defs/RespondentExpr" },
+        "training":    { "$ref": "#/$defs/RespondentExpr" },
+        "test":        { "$ref": "#/$defs/RespondentExpr" },
+        "preexposure_trials": { "type": "integer", "minimum": 0 },
+        "training_trials":    { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "preexposure", "training", "test"],
+      "additionalProperties": false
+    },
+
+    "USPreexposure": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "USPreexposure" },
+        "preexposure": { "$ref": "#/$defs/RespondentExpr" },
+        "training":    { "$ref": "#/$defs/RespondentExpr" },
+        "test":        { "$ref": "#/$defs/RespondentExpr" },
+        "preexposure_trials": { "type": "integer", "minimum": 0 },
+        "training_trials":    { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "preexposure", "training", "test"],
+      "additionalProperties": false
+    },
+
+    "Renewal": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "Renewal" },
+        "acquisition": { "$ref": "#/$defs/RespondentExpr" },
+        "extinction":  { "$ref": "#/$defs/RespondentExpr" },
+        "test":        { "$ref": "#/$defs/RespondentExpr" },
+        "acquisition_context": { "$ref": "#/$defs/ContextRef" },
+        "extinction_context":  { "$ref": "#/$defs/ContextRef" },
+        "test_context":        { "$ref": "#/$defs/ContextRef" }
+      },
+      "required": ["type", "acquisition", "extinction", "test",
+                   "acquisition_context", "extinction_context", "test_context"],
+      "additionalProperties": false
+    },
+
+    "Reinstatement": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "Reinstatement" },
+        "acquisition":      { "$ref": "#/$defs/RespondentExpr" },
+        "extinction":       { "$ref": "#/$defs/RespondentExpr" },
+        "reinstatement_us": { "$ref": "#/$defs/RespondentExpr" },
+        "test":             { "$ref": "#/$defs/RespondentExpr" }
+      },
+      "required": ["type", "acquisition", "extinction", "reinstatement_us", "test"],
+      "additionalProperties": false
+    },
+
+    "SpontaneousRecovery": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "SpontaneousRecovery" },
+        "acquisition":        { "$ref": "#/$defs/RespondentExpr" },
+        "extinction":         { "$ref": "#/$defs/RespondentExpr" },
+        "retention_interval": { "$ref": "#/$defs/Duration" },
+        "test":               { "$ref": "#/$defs/RespondentExpr" }
+      },
+      "required": ["type", "acquisition", "extinction", "retention_interval", "test"],
+      "additionalProperties": false
+    },
+
+    "LatentExtinction": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "LatentExtinction" },
+        "acquisition": { "$ref": "#/$defs/RespondentExpr" },
+        "preexposure": { "$ref": "#/$defs/RespondentExpr" },
+        "test":        { "$ref": "#/$defs/RespondentExpr" },
+        "preexposure_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "acquisition", "preexposure", "test"],
+      "additionalProperties": false
+    },
+
+    "PavlovianPREE": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PavlovianPREE" },
+        "acquisition": { "$ref": "#/$defs/RespondentExpr" },
+        "extinction":  { "$ref": "#/$defs/RespondentExpr" },
+        "test":        { "$ref": "#/$defs/RespondentExpr" },
+        "reinforcement_probability": { "$ref": "#/$defs/Probability" }
+      },
+      "required": ["type", "acquisition", "extinction", "test", "reinforcement_probability"],
+      "additionalProperties": false
+    },
+
+    "ContextualExtinction": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "ContextualExtinction" },
+        "acquisition": { "$ref": "#/$defs/RespondentExpr" },
+        "extinction":  { "$ref": "#/$defs/RespondentExpr" },
+        "test":        { "$ref": "#/$defs/RespondentExpr" },
+        "context":     { "$ref": "#/$defs/ContextRef" }
+      },
+      "required": ["type", "acquisition", "extinction", "test", "context"],
+      "additionalProperties": false
+    },
+
+    "ReconsolidationInterference": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "ReconsolidationInterference" },
+        "acquisition":         { "$ref": "#/$defs/RespondentExpr" },
+        "reactivation":        { "$ref": "#/$defs/RespondentExpr" },
+        "interference_window": { "$ref": "#/$defs/Duration" },
+        "extinction":          { "$ref": "#/$defs/RespondentExpr" },
+        "test":                { "$ref": "#/$defs/RespondentExpr" }
+      },
+      "required": ["type", "acquisition", "reactivation", "interference_window",
+                   "extinction", "test"],
+      "additionalProperties": false
+    },
+
+    "ConditionedTasteAversion": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "ConditionedTasteAversion" },
+        "taste_cs":    { "$ref": "#/$defs/StimulusRef" },
+        "visceral_us": { "$ref": "#/$defs/StimulusRef" },
+        "cs_duration": { "$ref": "#/$defs/Duration" },
+        "delay_to_us": { "$ref": "#/$defs/Duration" },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "taste_cs", "visceral_us", "cs_duration", "delay_to_us"],
+      "additionalProperties": false
+    },
+
+    "StimulusGeneralization": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "StimulusGeneralization" },
+        "training": { "$ref": "#/$defs/RespondentExpr" },
+        "test_gradient": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/StimulusRef" },
+          "minItems": 2
+        },
+        "training_trials": { "type": "integer", "minimum": 0 },
+        "test_trials":     { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "training", "test_gradient"],
+      "additionalProperties": false
+    },
+
+    "ContextualFearConditioning": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "ContextualFearConditioning" },
+        "context": { "$ref": "#/$defs/ContextRef" },
+        "us":      { "$ref": "#/$defs/StimulusRef" },
+        "us_onset_from_entry": { "$ref": "#/$defs/Duration" },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "context", "us", "us_onset_from_entry"],
+      "additionalProperties": false
+    },
+
+    "PeakProcedure": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "PeakProcedure" },
+        "cs": { "$ref": "#/$defs/StimulusRef" },
+        "us": { "$ref": "#/$defs/StimulusRef" },
+        "fi_duration":         { "$ref": "#/$defs/Duration" },
+        "peak_probe_duration": { "$ref": "#/$defs/Duration" },
+        "peak_probe_probability": { "$ref": "#/$defs/Probability" },
+        "training_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "cs", "us", "fi_duration", "peak_probe_duration"],
+      "additionalProperties": false
+    },
+
+    "MediatedConditioning": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "MediatedConditioning" },
+        "phase1": { "$ref": "#/$defs/RespondentExpr" },
+        "phase2": { "$ref": "#/$defs/RespondentExpr" },
+        "test":   { "$ref": "#/$defs/RespondentExpr" },
+        "phase1_trials": { "type": "integer", "minimum": 0 },
+        "phase2_trials": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["type", "phase1", "phase2", "test"],
+      "additionalProperties": false
+    }
+  },
+
+  "$ref": "#/$defs/TierBRespondentExpr"
+}
+

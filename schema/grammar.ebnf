@@ -1,0 +1,243 @@
+; contingency-respondent-dsl — Tier B Respondent Grammar (EBNF)
+;
+; Production rules for 26 Tier B Pavlovian procedures. Each rule is an
+; instantiation of Core's ExtensionRespondentPrimitive extension point.
+; No rule redefines any Tier A primitive, introduces any new LL(2)
+; decision point, or adds Turing-complete constructs.
+;
+; Parent contract (verbatim quote from the Core grammar; see
+; contingency-dsl/schema/respondent/grammar.ebnf):
+;
+;     extension_respondent_primitive ::= ident_upper "(" arg_list? ")"
+;     ident_upper                    ::= [A-Z][a-zA-Z0-9_]*
+;
+; The productions below each refine this abstract rule with a specific
+; identifier and argument schema. Shared terminals (stimulus_ref,
+; number, duration, probability, context_ref, respondent_expr) are
+; inherited from Core (contingency-dsl/schema/foundations/grammar.ebnf
+; and contingency-dsl/schema/respondent/grammar.ebnf).
+;
+; Related files:
+;   spec/en/grammar.md                     — companion English specification
+;   spec/ja/grammar.md                     — Japanese mirror
+;   spec/en/tier-b-primitives/             — per-primitive operational semantics
+;   schema/ast.schema.json                 — JSON Schema for AST nodes
+;   schema/extension-registry.md           — how a program activates this registry
+
+; === Root alternation — Tier B primitives contribute to this set ===
+;
+; Each rule below registers with Core's extension registry under its
+; identifier. The grammar admits these productions at the same position
+; as Core's core_respondent_primitive, via the ExtensionRespondentPrimitive
+; dispatch.
+
+tier_b_respondent_expr ::= higher_order_conditioning_expr
+                          | sensory_preconditioning_expr
+                          | counterconditioning_expr
+                          | blocking_expr
+                          | overshadowing_expr
+                          | overexpectation_expr
+                          | super_conditioning_expr
+                          | retrospective_revaluation_expr
+                          | conditioned_inhibition_expr
+                          | occasion_setting_expr
+                          | inhibition_of_delay_expr
+                          | summation_retardation_test_expr
+                          | latent_inhibition_expr
+                          | us_preexposure_expr
+                          | renewal_expr
+                          | reinstatement_expr
+                          | spontaneous_recovery_expr
+                          | latent_extinction_expr
+                          | pavlovian_pree_expr
+                          | contextual_extinction_expr
+                          | reconsolidation_interference_expr
+                          | conditioned_taste_aversion_expr
+                          | stimulus_generalization_expr
+                          | contextual_fear_conditioning_expr
+                          | peak_procedure_expr
+                          | mediated_conditioning_expr
+
+; === Acquisition and higher-order family ===
+
+higher_order_conditioning_expr ::=
+    "HigherOrderConditioning" "(" "phase1" "=" respondent_expr
+                                "," "phase2" "=" respondent_expr
+                                ("," "phase1_trials" "=" number)?
+                                ("," "phase2_trials" "=" number)? ")"
+
+sensory_preconditioning_expr ::=
+    "SensoryPreconditioning" "(" "phase1" "=" respondent_expr
+                                "," "phase2" "=" respondent_expr
+                                "," "test"   "=" respondent_expr
+                                ("," "phase1_trials" "=" number)?
+                                ("," "phase2_trials" "=" number)? ")"
+
+counterconditioning_expr ::=
+    "Counterconditioning" "(" "phase1" "=" respondent_expr
+                             "," "phase2" "=" respondent_expr
+                             ("," "phase1_trials" "=" number)?
+                             ("," "phase2_trials" "=" number)? ")"
+
+; === Cue-competition family ===
+
+blocking_expr ::=
+    "Blocking" "(" "phase1" "=" respondent_expr
+                  "," "phase2" "=" respondent_expr
+                  "," "test"   "=" respondent_expr
+                  ("," "phase1_trials" "=" number)?
+                  ("," "phase2_trials" "=" number)?
+                  ("," "test_trials"   "=" number)? ")"
+
+overshadowing_expr ::=
+    "Overshadowing" "(" "training" "=" respondent_expr
+                       "," "test_a" "=" respondent_expr
+                       "," "test_b" "=" respondent_expr
+                       ("," "training_trials" "=" number)? ")"
+
+overexpectation_expr ::=
+    "Overexpectation" "(" "phase1_a" "=" respondent_expr
+                         "," "phase1_b" "=" respondent_expr
+                         "," "phase2_compound" "=" respondent_expr
+                         "," "test" "=" respondent_expr
+                         ("," "phase1_trials" "=" number)?
+                         ("," "phase2_trials" "=" number)? ")"
+
+super_conditioning_expr ::=
+    "SuperConditioning" "(" "phase1_inhibitor" "=" respondent_expr
+                           "," "phase2_target"  "=" respondent_expr
+                           "," "test" "=" respondent_expr ")"
+
+retrospective_revaluation_expr ::=
+    "RetrospectiveRevaluation" "(" "phase1_compound" "=" respondent_expr
+                                  "," "phase2_element" "=" respondent_expr
+                                  "," "test" "=" respondent_expr ")"
+
+; === Inhibitory-learning family ===
+
+conditioned_inhibition_expr ::=
+    "ConditionedInhibition" "(" "training" "=" respondent_expr
+                               "," "test" "=" respondent_expr
+                               ("," "training_trials" "=" number)? ")"
+
+occasion_setting_expr ::=
+    "OccasionSetting" "(" "feature" "=" stimulus_ref
+                         "," "target"  "=" stimulus_ref
+                         "," "us"      "=" stimulus_ref
+                         "," "mode"    "=" ("FeaturePositive" | "FeatureNegative")
+                         ("," "training_trials" "=" number)? ")"
+
+inhibition_of_delay_expr ::=
+    "InhibitionOfDelay" "(" "cs" "=" stimulus_ref
+                           "," "us" "=" stimulus_ref
+                           "," "cs_duration" "=" duration
+                           "," "isi" "=" duration
+                           ("," "training_trials" "=" number)? ")"
+
+summation_retardation_test_expr ::=
+    "SummationRetardationTest" "(" "inhibitor" "=" stimulus_ref
+                                  "," "excitor"   "=" stimulus_ref
+                                  "," "us"        "=" stimulus_ref
+                                  "," "mode"      "=" ("Summation" | "Retardation") ")"
+
+; === Preexposure family ===
+
+latent_inhibition_expr ::=
+    "LatentInhibition" "(" "preexposure" "=" respondent_expr
+                          "," "training"   "=" respondent_expr
+                          "," "test"       "=" respondent_expr
+                          ("," "preexposure_trials" "=" number)?
+                          ("," "training_trials"    "=" number)? ")"
+
+us_preexposure_expr ::=
+    "USPreexposure" "(" "preexposure" "=" respondent_expr
+                       "," "training"   "=" respondent_expr
+                       "," "test"       "=" respondent_expr
+                       ("," "preexposure_trials" "=" number)?
+                       ("," "training_trials"    "=" number)? ")"
+
+; === Extinction-and-recovery family ===
+
+renewal_expr ::=
+    "Renewal" "(" "acquisition"  "=" respondent_expr
+                 "," "extinction"   "=" respondent_expr
+                 "," "test"         "=" respondent_expr
+                 "," "acquisition_context" "=" context_ref
+                 "," "extinction_context"  "=" context_ref
+                 "," "test_context"        "=" context_ref ")"
+
+reinstatement_expr ::=
+    "Reinstatement" "(" "acquisition" "=" respondent_expr
+                       "," "extinction"  "=" respondent_expr
+                       "," "reinstatement_us" "=" respondent_expr
+                       "," "test"        "=" respondent_expr ")"
+
+spontaneous_recovery_expr ::=
+    "SpontaneousRecovery" "(" "acquisition" "=" respondent_expr
+                             "," "extinction"  "=" respondent_expr
+                             "," "retention_interval" "=" duration
+                             "," "test"        "=" respondent_expr ")"
+
+latent_extinction_expr ::=
+    "LatentExtinction" "(" "acquisition" "=" respondent_expr
+                          "," "preexposure" "=" respondent_expr
+                          "," "test" "=" respondent_expr
+                          ("," "preexposure_trials" "=" number)? ")"
+
+pavlovian_pree_expr ::=
+    "PavlovianPREE" "(" "acquisition" "=" respondent_expr
+                       "," "extinction" "=" respondent_expr
+                       "," "test" "=" respondent_expr
+                       "," "reinforcement_probability" "=" probability ")"
+
+contextual_extinction_expr ::=
+    "ContextualExtinction" "(" "acquisition" "=" respondent_expr
+                              "," "extinction" "=" respondent_expr
+                              "," "test" "=" respondent_expr
+                              "," "context" "=" context_ref ")"
+
+reconsolidation_interference_expr ::=
+    "ReconsolidationInterference" "(" "acquisition" "=" respondent_expr
+                                     "," "reactivation" "=" respondent_expr
+                                     "," "interference_window" "=" duration
+                                     "," "extinction" "=" respondent_expr
+                                     "," "test" "=" respondent_expr ")"
+
+; === Specialized procedures ===
+
+conditioned_taste_aversion_expr ::=
+    "ConditionedTasteAversion" "(" "taste_cs" "=" stimulus_ref
+                                  "," "visceral_us" "=" stimulus_ref
+                                  "," "cs_duration" "=" duration
+                                  "," "delay_to_us"  "=" duration
+                                  ("," "training_trials" "=" number)? ")"
+
+stimulus_generalization_expr ::=
+    "StimulusGeneralization" "(" "training" "=" respondent_expr
+                                "," "test_gradient" "=" "[" stimulus_ref ("," stimulus_ref)+ "]"
+                                ("," "training_trials" "=" number)?
+                                ("," "test_trials" "=" number)? ")"
+
+contextual_fear_conditioning_expr ::=
+    "ContextualFearConditioning" "(" "context" "=" context_ref
+                                    "," "us" "=" stimulus_ref
+                                    "," "us_onset_from_entry" "=" duration
+                                    ("," "training_trials" "=" number)? ")"
+
+peak_procedure_expr ::=
+    "PeakProcedure" "(" "cs" "=" stimulus_ref
+                       "," "us" "=" stimulus_ref
+                       "," "fi_duration" "=" duration
+                       "," "peak_probe_duration" "=" duration
+                       ("," "peak_probe_probability" "=" probability)?
+                       ("," "training_trials" "=" number)? ")"
+
+mediated_conditioning_expr ::=
+    "MediatedConditioning" "(" "phase1" "=" respondent_expr
+                              "," "phase2" "=" respondent_expr
+                              "," "test" "=" respondent_expr
+                              ("," "phase1_trials" "=" number)?
+                              ("," "phase2_trials" "=" number)? ")"
+
+; === End of Tier B productions ===
+
