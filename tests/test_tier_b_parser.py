@@ -152,3 +152,49 @@ def test_renewal_aba_full_roundtrip():
             },
         )
 
+
+# ---------------------------------------------------------------------------
+# LatentInhibition — two-phase preexposure+training+test
+# ---------------------------------------------------------------------------
+
+
+def test_latent_inhibition_full_roundtrip():
+    cs_only = {"type": "CSOnly", "cs": "tone", "trials": 80}
+    node = parse_primitive(
+        "LatentInhibition",
+        None,
+        {
+            "preexposure": cs_only,
+            "training": TONE_SHOCK_PAIR,
+            "test": EXTINCTION_TONE,
+            "preexposure_trials": 80,
+            "training_trials": 40,
+        },
+    )
+    assert isinstance(node, tier_b_ast.LatentInhibition)
+    assert node.preexposure_trials == 80
+    assert node.training_trials == 40
+
+    serialized = to_dict(node)
+    assert serialized["type"] == "LatentInhibition"
+    assert serialized["preexposure"]["type"] == "CSOnly"
+    assert serialized["preexposure"]["trials"] == 80
+    _roundtrip_equal(node)
+
+
+def test_latent_inhibition_trials_optional():
+    node = parse_primitive(
+        "LatentInhibition",
+        None,
+        {
+            "preexposure": {"type": "CSOnly", "cs": "tone"},
+            "training": TONE_SHOCK_PAIR,
+            "test": EXTINCTION_TONE,
+        },
+    )
+    assert node.preexposure_trials is None
+    assert node.training_trials is None
+    serialized = to_dict(node)
+    assert "preexposure_trials" not in serialized
+    assert "training_trials" not in serialized
+
