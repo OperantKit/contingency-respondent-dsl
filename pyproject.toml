@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "contingency-respondent-dsl"
-version = "0.0.0"
+version = "0.1.0"
 description = "Tier B Pavlovian (respondent) procedure extension for contingency-dsl. Provides 26 Pavlovian conditioning primitives (blocking, overshadowing, latent inhibition, renewal, reinstatement, etc.) that plug into the contingency-dsl Core via the Respondent extension point."
 readme = "README.md"
 requires-python = ">=3.11"
