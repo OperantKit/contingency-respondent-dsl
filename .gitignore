@@ -6,11 +6,21 @@ __pycache__/
 *.egg-info/
 .mypy_cache/
 .pytest_cache/
+.ruff_cache/
+.tox/
 
 # Virtualenv / build artifacts
 .venv/
 dist/
 build/
+
+# Test / coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# Project-local databases
+*.db
 
 # Editor / OS
 .DS_Store
