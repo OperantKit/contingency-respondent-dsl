@@ -104,3 +104,51 @@ def test_blocking_omits_none_trials_from_serialization():
 def test_blocking_is_in_default_registry():
     assert "Blocking" in DEFAULT_REGISTRY
 
+
+# ---------------------------------------------------------------------------
+# Renewal — context kwargs (ABA)
+# ---------------------------------------------------------------------------
+
+
+def test_renewal_aba_full_roundtrip():
+    import pytest
+
+    node = parse_primitive(
+        "Renewal",
+        None,
+        {
+            "acquisition": TONE_SHOCK_PAIR,
+            "extinction": EXTINCTION_TONE,
+            "test": EXTINCTION_TONE,
+            "acquisition_context": "ctx_a",
+            "extinction_context": "ctx_b",
+            "test_context": "ctx_a",
+        },
+    )
+    assert isinstance(node, tier_b_ast.Renewal)
+    # Three ContextRef fields discriminate ABA from ABC/AAB
+    assert node.acquisition_context == "ctx_a"
+    assert node.extinction_context == "ctx_b"
+    assert node.test_context == "ctx_a"
+
+    serialized = to_dict(node)
+    assert serialized["type"] == "Renewal"
+    assert serialized["acquisition_context"] == "ctx_a"
+    assert serialized["extinction_context"] == "ctx_b"
+    assert serialized["test_context"] == "ctx_a"
+    _roundtrip_equal(node)
+
+    with pytest.raises(Exception):
+        parse_primitive(
+            "Renewal",
+            None,
+            {
+                "acquisition": TONE_SHOCK_PAIR,
+                "extinction": EXTINCTION_TONE,
+                "test": EXTINCTION_TONE,
+                "acquisition_context": "ctx_a",
+                "extinction_context": "ctx_b",
+                # missing test_context
+            },
+        )
+
