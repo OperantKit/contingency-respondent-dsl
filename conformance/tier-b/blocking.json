@@ -1,0 +1,10 @@
+[
+  {
+    "id": "blocking-basic",
+    "comment": "Kamin (1969) blocking: A pretrained with US, then AX compound with same US; test X alone.",
+    "input": "Blocking(phase1 = Pair.ForwardDelay(a, shock, isi=10-s, cs_duration=15-s), phase2 = Pair.ForwardDelay(Compound([a, x]), shock, isi=10-s, cs_duration=15-s), test = Extinction(x), phase1_trials = 40, phase2_trials = 20, test_trials = 10)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented. Blocking node with nested PairForwardDelay (phase1), PairForwardDelay with Compound-typed CS (phase2), and Extinction (test)."
+  }
+]
+

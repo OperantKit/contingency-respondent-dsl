@@ -1,0 +1,10 @@
+[
+  {
+    "id": "counterconditioning-basic",
+    "comment": "Tone first paired with aversive US, then with appetitive US.",
+    "input": "Counterconditioning(phase1 = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), phase2 = Pair.ForwardDelay(tone, food, isi=10-s, cs_duration=15-s))",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented. Counterconditioning with two nested PairForwardDelay nodes."
+  }
+]
+

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "reinstatement-basic",
+    "comment": "Rescorla & Heth (1975): acquisition, extinction, US-alone reinstatement, test.",
+    "input": "Reinstatement(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), extinction = Extinction(tone), reinstatement_us = USOnly(shock, trials=4), test = Extinction(tone))",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "conditioned-inhibition-basic",
+    "comment": "Rescorla (1969) Pavlovian conditioned inhibition: schematic; production programs typically intermix A+ and AI- at the Phase level.",
+    "input": "ConditionedInhibition(training = Serial([Pair.ForwardDelay(a, shock, isi=10-s, cs_duration=15-s), Pair.ForwardDelay(Compound([a, i]), nothing, isi=10-s, cs_duration=15-s)], isi=30-s), test = Extinction(i), training_trials = 80)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented. Note: Serial is Tier A; the input shape here is schematic because full conditioned-inhibition training is typically expressed at the Phase level."
+  }
+]
+

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "stimulus-generalization-tone-frequency",
+    "comment": "Hovland (1937) tone-frequency generalization gradient after 1000 Hz training.",
+    "input": "StimulusGeneralization(training = Pair.ForwardDelay(tone_1000hz, shock, isi=10-s, cs_duration=15-s), test_gradient = [tone_500hz, tone_750hz, tone_1000hz, tone_1250hz, tone_1500hz], training_trials = 40, test_trials = 8)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented. test_gradient is a list; the schema requires at least two elements."
+  }
+]
+

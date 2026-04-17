@@ -1,0 +1,10 @@
+[
+  {
+    "id": "conditioned-taste-aversion-one-trial",
+    "comment": "Garcia, Ervin, & Koelling (1966): saccharin solution followed by LiCl after 60 min.",
+    "input": "ConditionedTasteAversion(taste_cs = saccharin_solution, visceral_us = licl_injection, cs_duration = 10-min, delay_to_us = 60-min, training_trials = 1)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+

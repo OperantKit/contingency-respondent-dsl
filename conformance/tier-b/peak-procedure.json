@@ -1,0 +1,10 @@
+[
+  {
+    "id": "peak-procedure-30s-fi",
+    "comment": "Roberts (1981): 30 s FI, 90 s peak probes at 25% of trials.",
+    "input": "PeakProcedure(cs = tone, us = food, fi_duration = 30-s, peak_probe_duration = 90-s, peak_probe_probability = 0.25, training_trials = 400)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+

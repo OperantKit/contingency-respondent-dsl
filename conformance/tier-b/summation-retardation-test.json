@@ -1,0 +1,17 @@
+[
+  {
+    "id": "summation-retardation-test-summation",
+    "comment": "Rescorla (1969) summation test: inhibitor I compounded with excitor E.",
+    "input": "SummationRetardationTest(inhibitor = i, excitor = e, us = shock, mode = Summation)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  },
+  {
+    "id": "summation-retardation-test-retardation",
+    "comment": "Retardation test: I now paired with US; acquisition compared to novel control.",
+    "input": "SummationRetardationTest(inhibitor = i, excitor = e, us = shock, mode = Retardation)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+

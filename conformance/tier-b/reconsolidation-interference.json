@@ -1,0 +1,10 @@
+[
+  {
+    "id": "reconsolidation-interference-60min-window",
+    "comment": "Monfils et al. (2009): CS reactivation followed by extinction within a reconsolidation window.",
+    "input": "ReconsolidationInterference(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), reactivation = CSOnly(tone, trials=1), interference_window = 60-min, extinction = Extinction(tone), test = Extinction(tone))",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+

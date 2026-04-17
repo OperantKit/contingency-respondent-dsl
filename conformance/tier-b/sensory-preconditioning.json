@@ -1,0 +1,10 @@
+[
+  {
+    "id": "sensory-preconditioning-basic",
+    "comment": "Brogden (1939): pair light and tone, then tone with shock, test light.",
+    "input": "SensoryPreconditioning(phase1 = Pair.ForwardDelay(light, tone, isi=5-s, cs_duration=10-s), phase2 = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), test = CSOnly(light, trials=8))",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented. SensoryPreconditioning node with three nested RespondentExprs."
+  }
+]
+

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "latent-extinction-basic",
+    "comment": "Schematic: acquisition, context-only preexposure, test. Primary Pavlovian source flagged in auxiliary.md.",
+    "input": "LatentExtinction(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), preexposure = CSOnly(context_a, trials=0), test = Extinction(tone), preexposure_trials = 30)",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented. The preexposure argument is schematic; in practice context-only exposure is expressed at the Phase level."
+  }
+]
+

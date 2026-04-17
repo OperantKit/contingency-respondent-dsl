@@ -1,0 +1,17 @@
+[
+  {
+    "id": "retrospective-revaluation-backward-blocking",
+    "comment": "Backward blocking: AX compound first, then A alone with US; test X.",
+    "input": "RetrospectiveRevaluation(phase1_compound = Pair.ForwardDelay(Compound([a, x]), shock, isi=10-s, cs_duration=15-s), phase2_element = Pair.ForwardDelay(a, shock, isi=10-s, cs_duration=15-s), test = Extinction(x))",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  },
+  {
+    "id": "retrospective-revaluation-recovery-from-overshadowing",
+    "comment": "Recovery from overshadowing: AX compound first, then A extinguished; test X.",
+    "input": "RetrospectiveRevaluation(phase1_compound = Pair.ForwardDelay(Compound([a, x]), shock, isi=10-s, cs_duration=15-s), phase2_element = Extinction(a), test = Extinction(x))",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+

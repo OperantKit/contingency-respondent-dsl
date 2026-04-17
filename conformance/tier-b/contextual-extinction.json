@@ -1,0 +1,10 @@
+[
+  {
+    "id": "contextual-extinction-basic",
+    "comment": "Extinction learned in a specific context; sets up later renewal comparisons.",
+    "input": "ContextualExtinction(acquisition = Pair.ForwardDelay(tone, shock, isi=10-s, cs_duration=15-s), extinction = Extinction(tone), test = Extinction(tone), context = \"ctx_b\")",
+    "expected_ast": null,
+    "todo": "Fill once parser is implemented."
+  }
+]
+
