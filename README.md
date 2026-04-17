@@ -1,5 +1,7 @@
 # contingency-respondent-dsl
 
+:jp: [日本語版 README](README.ja.md)
+
 Tier B Pavlovian (respondent) procedure extension for
 [`contingency-dsl`](../contingency-dsl/). This package defines 26 classical
 conditioning procedures that extend the Core respondent layer **without
