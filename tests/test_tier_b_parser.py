@@ -11,6 +11,11 @@ Each case exercises the full pipeline:
 
 from __future__ import annotations
 
+import json
+import pathlib
+
+import pytest
+
 from contingency_respondent_dsl import (
     DEFAULT_REGISTRY,
     ast as tier_b_ast,
@@ -282,4 +287,73 @@ def test_reinstatement_full_roundtrip():
                 # missing reinstatement_us
             },
         )
+
+
+# ---------------------------------------------------------------------------
+# Remaining 21 Tier B primitives — parametrized dispatch coverage
+# ---------------------------------------------------------------------------
+#
+# Every fixture in `conformance/tier-b/*.json` supplies an ``expected_ast``
+# whose ``type`` field names a Tier B primitive. For each fixture we:
+#
+#   1. Strip the ``type`` key from the expected_ast dict to obtain kwargs.
+#   2. Dispatch ``parse_primitive(name, positional_args=None, keyword_args=kwargs)``.
+#   3. Serialize the resulting AST and assert it equals the original fixture.
+#
+# This exercises the full registry dispatch path for every primitive,
+# complementing the dict-based round-trip coverage in ``test_conformance.py``
+# (which uses ``from_dict`` / ``to_dict`` but does not go through the
+# registry's ``parse_primitive`` entry point).
+
+_FIXTURES_DIR = pathlib.Path(__file__).resolve().parent.parent / "conformance" / "tier-b"
+
+
+def _load_fixture_cases() -> list[tuple[str, dict]]:
+    cases: list[tuple[str, dict]] = []
+    for path in sorted(_FIXTURES_DIR.glob("*.json")):
+        with path.open("r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        for case in data:
+            ea = case.get("expected_ast")
+            if ea is None:
+                continue
+            cases.append((case.get("id", path.stem), ea))
+    return cases
+
+
+_FIXTURE_CASES = _load_fixture_cases()
+
+
+@pytest.mark.parametrize(
+    ("case_id", "expected_ast"),
+    _FIXTURE_CASES,
+    ids=[cid for (cid, _) in _FIXTURE_CASES],
+)
+def test_parse_primitive_dispatch_all_26(case_id: str, expected_ast: dict) -> None:
+    name = expected_ast["type"]
+    kwargs = {k: v for k, v in expected_ast.items() if k != "type"}
+
+    node = parse_primitive(name, positional_args=None, keyword_args=kwargs)
+    assert type(node).__name__ == name
+
+    # Serialization must reproduce the fixture byte-for-byte (modulo dict
+    # ordering). Empty-optional fields were already stripped from the
+    # fixture's expected_ast so ``to_dict`` should produce an identical
+    # dict without extra keys.
+    serialized = to_dict(node)
+    assert serialized == expected_ast, (
+        f"{case_id}: parse_primitive -> to_dict drifted.\n"
+        f"  expected: {expected_ast!r}\n"
+        f"  got:      {serialized!r}"
+    )
+
+
+def test_all_26_tier_b_primitives_covered() -> None:
+    """Sanity check: the parametrized sweep exercises every registered identifier."""
+    covered = {ea["type"] for _, ea in _FIXTURE_CASES}
+    assert covered == set(DEFAULT_REGISTRY.keywords), (
+        f"parametrized coverage gap. "
+        f"missing: {set(DEFAULT_REGISTRY.keywords) - covered}, "
+        f"extra: {covered - set(DEFAULT_REGISTRY.keywords)}"
+    )
 
