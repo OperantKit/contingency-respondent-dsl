@@ -125,9 +125,9 @@ Primary anchors for the 26 primitives:
 
 ## 5. No in-file version markers
 
-This package does **not** embed version-marking prose in tracked files
-(no "v1", no "major bump", no "Core freeze"). History is carried by
-`git tag` / `git log` and not duplicated in documentation.
+This package does **not** embed version-marking prose in tracked files.
+History is carried by `git tag` / `git log` and is not duplicated in
+documentation.
 
 ---
 

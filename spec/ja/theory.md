@@ -14,7 +14,7 @@
 覆い隠し、過剰期待、スーパー条件づけ、遡及的再評価 — はパヴロフ型
 連合可能性の量的モデルに照らしてはじめて理解可能となる。本ページは
 Core と本パッケージが読者に前提とするモデルを名付け、どのプリミティブの
-どのパラメータの選択がどのモデルによって動機づけられているかを述べる。
+どのパラメータの選択がどのモデルに基づくかを述べる。
 **方程式の導出は行わない。**
 
 ---
@@ -38,7 +38,7 @@ RW は以下を直接予測する。
 - **スーパー条件づけ** (Rescorla, 1971) — 条件性抑制子が新奇 CS との
   複合になると、負の予測が生じ、新 CS が λ を超える。
 
-RW に動機づけられたパラメータをもつ Tier B 産出:
+RW に基づくパラメータをもつ Tier B 産出:
 `BlockingExpr`, `OvershadowingExpr`, `OverexpectationExpr`,
 `SuperConditioningExpr`, `ConditionedInhibitionExpr`,
 `SummationRetardationTestExpr`。
@@ -92,7 +92,7 @@ SOP は以下のもっとも明快な説明である。
   この表象が新しい結果と連合する。
 - **二次条件づけと感覚性前条件づけ** — A2 表象を経由した連鎖学習。
 
-SOP に動機づけられた Tier B 産出: `HigherOrderConditioningExpr`,
+SOP に基づく Tier B 産出: `HigherOrderConditioningExpr`,
 `SensoryPreconditioningExpr`, `MediatedConditioningExpr`。
 
 ---
@@ -112,7 +112,7 @@ Bouton の検索理論は以下の主要な説明である。
 - **自発的回復** (Rescorla, 2004) — 時間経過が文脈変化の役割を果たす。
 - **文脈性消去** — 消去学習は文脈特異的。
 
-Bouton に動機づけられた Tier B 産出: `RenewalExpr`,
+Bouton に基づく Tier B 産出: `RenewalExpr`,
 `ReinstatementExpr`, `SpontaneousRecoveryExpr`,
 `ContextualExtinctionExpr`。
 
@@ -125,7 +125,7 @@ Bouton に動機づけられた Tier B 産出: `RenewalExpr`,
 1981) および他のいくつかの手続きのタイミング依存パラメータの主要な
 説明である。
 
-タイミング理論に動機づけられた Tier B 産出: `PeakProcedureExpr`;
+タイミング理論に基づく Tier B 産出: `PeakProcedureExpr`;
 `InhibitionOfDelayExpr` のパラメータ。
 
 ---

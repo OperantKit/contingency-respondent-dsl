@@ -16,7 +16,7 @@ overshadowing, overexpectation, super-conditioning, retrospective
 revaluation — are intelligible only in light of a quantitative model of
 Pavlovian associability. This page names the models that Core and this
 package assume a reader has seen, and states which parameter choices on
-which primitives are motivated by which model. It does **not** derive
+which primitives are derived from which model. It does **not** derive
 the equations.
 
 ---
@@ -43,7 +43,7 @@ RW directly predicts:
   compound with a novel CS yields negative prediction so the new CS
   overshoots λ.
 
-Tier B productions whose parameters are motivated by RW:
+Tier B productions whose parameters are derived from RW:
 `BlockingExpr`, `OvershadowingExpr`, `OverexpectationExpr`,
 `SuperConditioningExpr`, `ConditionedInhibitionExpr`,
 `SummationRetardationTestExpr`.
@@ -99,7 +99,7 @@ SOP is the cleanest account of:
 - **Second-order and sensory preconditioning** — chain learning via A2
   representations.
 
-Tier B productions motivated by SOP: `HigherOrderConditioningExpr`,
+Tier B productions derived from SOP: `HigherOrderConditioningExpr`,
 `SensoryPreconditioningExpr`, `MediatedConditioningExpr`.
 
 ---
@@ -121,7 +121,7 @@ Bouton's retrieval theory is the primary account of:
   role of context change.
 - **Contextual extinction** — extinction learning is context-specific.
 
-Tier B productions motivated by Bouton: `RenewalExpr`,
+Tier B productions derived from Bouton: `RenewalExpr`,
 `ReinstatementExpr`, `SpontaneousRecoveryExpr`,
 `ContextualExtinctionExpr`.
 
@@ -134,7 +134,7 @@ duration and ITI as structural variables (the I/T ratio). These models
 are the primary account of the peak procedure (Roberts, 1981) and of
 the timing-dependent parameters of several other procedures.
 
-Tier B production motivated by timing theory: `PeakProcedureExpr`;
+Tier B production derived from timing theory: `PeakProcedureExpr`;
 parameters of `InhibitionOfDelayExpr`.
 
 ---
