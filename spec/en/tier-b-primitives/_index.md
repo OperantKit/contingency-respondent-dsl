@@ -52,8 +52,8 @@ Tier A primitive.
 | `Renewal` | Renewal (ABA / ABC / AAB) | Bouton & Bolles (1979); Bouton (2004) |
 | `Reinstatement` | Reinstatement | Rescorla & Heth (1975); Bouton (2004) |
 | `SpontaneousRecovery` | Spontaneous recovery | Pavlov (1927); Rescorla (2004) |
-| `LatentExtinction` | Latent extinction (Pavlovian) | Bouton (2004) *[primary Pavlovian source requires verification; see auxiliary.md]* |
-| `PavlovianPREE` | Partial-reinforcement extinction effect (Pavlovian) | Mackintosh (1974) *[primary empirical source requires verification; see auxiliary.md]* |
+| `LatentExtinction` | Latent extinction (Pavlovian) | Bouton (2004) *[primary Pavlovian source requires verification]* |
+| `PavlovianPREE` | Partial-reinforcement extinction effect (Pavlovian) | Mackintosh (1974) *[primary empirical source requires verification]* |
 | `ContextualExtinction` | Contextual extinction | Bouton (2004) |
 | `ReconsolidationInterference` | Reconsolidation interference | Monfils et al. (2009) |
 

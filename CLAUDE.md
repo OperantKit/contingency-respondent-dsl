@@ -14,12 +14,11 @@ without modifying the Core grammar.
   `operantkit/.claude/rules/common/local-scratch-and-privacy.md`) apply in
   full.
 
-## Design-checkpoint discipline (no version declarations)
+## Design discipline (no in-file version markers)
 
 - Do **not** write "v1", "v2", "major bump", "Core freeze", or any similar
-  version-marking language. This repository has no public release channel,
-  so such declarations are meaningless here. Describe changes as **additive**
-  or as **design checkpoints** in [`spec/en/auxiliary.md`](spec/en/auxiliary.md).
+  version-marking language in tracked files. Rely on `git tag` / `git log`
+  for history; do not maintain an in-file changelog.
 - Changes to Tier B primitives are allowed at any time, but must remain
   **additive** with respect to Core: no change in this package may require a
   change to Core grammar or Core semantics.

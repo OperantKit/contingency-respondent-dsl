@@ -40,9 +40,9 @@ PavlovianPREE(
 
 **Primary-source note.** The empirical effect is reliably replicated
 but its canonical Pavlovian primary-source is not a single paper.
-Mackintosh (1974) is the canonical textbook treatment; further
-primary-source verification is flagged in
-[`../auxiliary.md`](../auxiliary.md).
+Mackintosh (1974) is the canonical textbook treatment and is used
+conservatively here as the primary anchor; further primary-source
+verification remains open.
 
 ## Primary citation
 

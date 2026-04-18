@@ -51,8 +51,8 @@
 | `Renewal` | 更新（リニューアル、ABA / ABC / AAB） | Bouton & Bolles (1979); Bouton (2004) |
 | `Reinstatement` | 再発 | Rescorla & Heth (1975); Bouton (2004) |
 | `SpontaneousRecovery` | 自発的回復 | Pavlov (1927); Rescorla (2004) |
-| `LatentExtinction` | 潜在消去（パヴロフ型） | Bouton (2004) *[パヴロフ型一次出典は要確認。auxiliary.md 参照]* |
-| `PavlovianPREE` | 部分強化消去効果（パヴロフ型） | Mackintosh (1974) *[パヴロフ型一次経験的出典は要確認。auxiliary.md 参照]* |
+| `LatentExtinction` | 潜在消去（パヴロフ型） | Bouton (2004) *[パヴロフ型一次出典は要確認]* |
+| `PavlovianPREE` | 部分強化消去効果（パヴロフ型） | Mackintosh (1974) *[パヴロフ型一次経験的出典は要確認]* |
 | `ContextualExtinction` | 文脈性消去 | Bouton (2004) |
 | `ReconsolidationInterference` | 再固定化妨害 | Monfils et al. (2009) |
 

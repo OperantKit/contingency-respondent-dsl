@@ -40,8 +40,8 @@ LatentExtinction(
 **Primary-source note.** The most frequently cited reference is Seward
 & Levy (1949) for the instrumental form. For the *Pavlovian* form
 referenced here, the cleanest theoretical framing is Bouton (2004);
-further primary-source verification is flagged in
-[`../auxiliary.md`](../auxiliary.md).
+a dedicated primary Pavlovian source has not been pinned down and
+Bouton (2004) is used conservatively as the theoretical anchor.
 
 ## Primary citation
 

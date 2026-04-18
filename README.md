@@ -59,7 +59,6 @@ contingency-respondent-dsl/
 │   ├── integration-with-core.md  extension-point contract
 │   ├── grammar.md                EBNF for all 26 Tier B primitives
 │   ├── theory.md                 Pavlovian learning framework (pointer-level)
-│   ├── auxiliary.md             design-checkpoint log
 │   └── tier-b-primitives/        one file per primitive + _index.md
 ├── spec/ja/                      Japanese mirror of spec/en/
 ├── schema/

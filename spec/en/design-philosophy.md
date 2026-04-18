@@ -123,18 +123,11 @@ Primary anchors for the 26 primitives:
 
 ---
 
-## 5. No version declarations
+## 5. No in-file version markers
 
-This repository has no public release channel at the time of this
-design checkpoint. Consequently, the package does **not** declare
-versions (no "v1", no "major bump", no "Core freeze"). Design changes
-are recorded as checkpoints in
-[`auxiliary.md`](auxiliary.md) — additive, timestamped entries with no
-semantic-version arithmetic.
-
-This mirrors Core's discipline (see `contingency-dsl/spec/en/
-auxiliary.md`) and reflects the Ψ plan's decision that version
-declarations are meaningless without a remote.
+This package does **not** embed version-marking prose in tracked files
+(no "v1", no "major bump", no "Core freeze"). History is carried by
+`git tag` / `git log` and not duplicated in documentation.
 
 ---
 

@@ -35,7 +35,6 @@ contingency-respondent-dsl/
 │   ├── integration-with-core.md  拡張点の契約
 │   ├── grammar.md                26 の Tier B プリミティブ全ての EBNF
 │   ├── theory.md                 Pavlov 型学習フレームワーク（指示レベル）
-│   ├── auxiliary.md             設計チェックポイントログ
 │   └── tier-b-primitives/        プリミティブごとのファイル + _index.md
 ├── spec/ja/                      spec/en/ の日本語ミラー
 ├── schema/
