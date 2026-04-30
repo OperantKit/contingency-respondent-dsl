@@ -10,9 +10,9 @@ without modifying the Core grammar.
 - **Read/write restricted to this package root.** Do not modify files outside
   `contingency-respondent-dsl/`. The parent `contingency-dsl/` package is
   read-only from this context.
-- The upstream OperantKit rules (`operantkit/CLAUDE.md`,
-  `operantkit/.claude/rules/common/local-scratch-and-privacy.md`) apply in
-  full.
+- When this package is worked on inside an upstream monorepo, any rules
+  defined at the monorepo level apply in full. This package must remain
+  self-contained when distributed standalone (no upward path references).
 
 ## Design discipline (no in-file version markers)
 
@@ -50,11 +50,10 @@ without modifying the Core grammar.
 
 ## Tracked vs. gitignored
 
-- `.local/`, `tmp/`, `PLAN.md`, `.venv/`, `dist/`, `build/`, `__pycache__/`,
-  `*.egg-info/` are gitignored.
+- Refer to this package's `.gitignore` for ignored patterns.
 - **Do not reference gitignored paths from tracked files.** Any planning,
-  persona-review, or LLM-draft content goes under `.local/planning/`, never
-  inline-linked from spec/docs/schema.
+  persona-review, or LLM-draft content goes under the gitignored scratch
+  tree, never inline-linked from spec/docs/schema.
 
 ## CJK integrity (after any Japanese write)
 
