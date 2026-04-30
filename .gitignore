@@ -31,6 +31,8 @@ htmlcov/
 tmp/
 PLAN.md
 
-# uv is prohibited by operantkit/CLAUDE.md; ignore lockfiles if created by tooling
+# uv package manager is banned; any accidental uv.lock must not be tracked.
 uv.lock
 
+.venv-fresh/
+*.py[cod]
