@@ -9,7 +9,7 @@
 
 ## 1. OperantKit レイヤースタックにおける位置
 
-`contingency-dsl` (Core) はすでに六層 Ψ アーキテクチャ
+`contingency-dsl` (Core) はすでに六層アーキテクチャ
 (`foundations / operant / respondent / composed / experiment /
 annotations`) を定義している。Core のレスポンデント層は意図的に
 最小化されており、基礎的なパヴロフ型プリミティブ (R1–R14) のみを

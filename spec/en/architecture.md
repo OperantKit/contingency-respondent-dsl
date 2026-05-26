@@ -9,7 +9,7 @@
 
 ## 1. Position in the OperantKit layer stack
 
-`contingency-dsl` (Core) already defines the six-layer Ψ architecture
+`contingency-dsl` (Core) already defines the six-layer architecture
 (`foundations / operant / respondent / composed / experiment /
 annotations`). The Core respondent layer is intentionally minimal: it
 covers the foundational Pavlovian primitives (R1–R14) and nothing more

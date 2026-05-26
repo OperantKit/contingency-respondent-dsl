@@ -58,15 +58,40 @@ without modifying the Core grammar.
 ## CJK integrity (after any Japanese write)
 
 After writing to `spec/ja/` or `docs/ja/`, grep for U+FFFD (`\uFFFD`,
-displayed as `�`) and repair any occurrences before completing the task.
+the REPLACEMENT CHARACTER glyph) and repair any occurrences before completing the task.
 Zero tolerance.
 
-## What this package contains at this checkpoint
+## What this package contains
 
 - Specification (`spec/en/` + `spec/ja/` mirror), schema (`schema/`),
-  conformance fixture skeletons (`conformance/tier-b/`), minimal docs
+  conformance fixtures (`conformance/tier-b/`), minimal docs
   (`docs/en/`, `docs/ja/`).
-- **No parser implementation.** A Python parser and runtime registry are
-  separate follow-on efforts. Do not add source code or tests in this
-  checkpoint unless the user explicitly requests it.
+- Python parser package (`src/contingency_respondent_dsl/`):
+  - `ast.py` — frozen dataclasses for all 26 Tier B primitives.
+  - `registry.py` — identifier dispatch table feeding the Core
+    `ExtensionRespondentPrimitive` extension point.
+  - `parser.py` — thin `parse_primitive()` entrypoint accepting positional
+    and keyword args at the extension boundary.
+  - `serializer.py` — dict round-trip (`to_dict` / `from_dict`) aligned
+    with `schema/ast.schema.json`.
+- Tests under `tests/` covering AST construction, registry dispatch,
+  end-to-end parser paths for 5 demonstration primitives (blocking,
+  renewal, latent inhibition, overshadowing, reinstatement), and
+  conformance-fixture replay. The remaining 21 fixtures have populated
+  `input` strings but retain `expected_ast: null` until their argument
+  schemas are exercised end-to-end through the parser.
+
+## Parser scope discipline
+
+- The Tier B parser operates on **already-evaluated keyword arguments at
+  the extension boundary**. Nested Tier A expressions are treated as opaque
+  dicts; this package does not re-implement Core's tokenizer or expression
+  parser.
+- New primitives must register through `ExtensionRespondentPrimitive` and
+  must not require changes to Core grammar or Core semantics. If a
+  proposed primitive's argument shape cannot be expressed through the
+  extension hook, route the proposal to Core as a separate change there.
+- The conformance fixtures under `conformance/tier-b/` are the executable
+  contract for parser behavior. When extending an `expected_ast`, update
+  the fixture in lock-step with the parser change.
 
