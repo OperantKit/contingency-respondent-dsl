@@ -2,7 +2,7 @@
 
 :gb: [English README](README.md)
 
-[`contingency-dsl`](../contingency-dsl/) 向けの Tier B Pavlov 型（レスポンデント）手続き拡張。本パッケージは、Core のレスポンデント層の文法を**変更することなく**、`ExtensionRespondentPrimitive` 拡張点を介して生成規則を登録することで、26 の古典的条件づけ手続きを定義する。
+[`contingency-dsl`](https://github.com/OperantKit/contingency-dsl) 向けの Tier B Pavlov 型（レスポンデント）手続き拡張。本パッケージは、Core のレスポンデント層の文法を**変更することなく**、`ExtensionRespondentPrimitive` 拡張点を介して生成規則を登録することで、26 の古典的条件づけ手続きを定義する。
 
 ## `contingency-dsl` との関係
 
@@ -61,21 +61,67 @@ contingency-respondent-dsl/
   - 識別子 + キーワード引数束を AST コンストラクタへディスパッチするレジストリ（`registry.py`）
   - AST スキーマ互換の dict シリアライザ（`serializer.py`）
   - 薄い `parse_primitive()` エントリポイント（`parser.py`）
-- 5 つのデモ用プリミティブ（blocking, renewal, latent inhibition, overshadowing, reinstatement）に対する具体的な `expected_ast` dict 付きの適合性フィクスチャ。残りの 21 件のフィクスチャには `input` 文字列は埋まっているが、引数スキーマがパーサ経由でエンドツーエンドに実行されるまで `expected_ast: null` のまま
+- 26 プリミティブすべての適合性フィクスチャ（`conformance/tier-b/` 配下の 26 ファイル・28 ケース）。各ケースに `input` 文字列と具体的な `expected_ast` dict がある
 
-## インストール（ローカル開発用）
+## インストール
 
-本パッケージは上流の OperantKit ポリシーに従って `mise` + `venv` を使用する。`uv` は使用しない。
+```bash
+pip install git+https://github.com/OperantKit/contingency-respondent-dsl
+```
+
+ローカル開発では、上流の OperantKit ポリシーに従って `mise` + `venv` を使用する。`uv` は使用しない。
 
 ```sh
 # contingency-respondent-dsl/ 内部から
 mise exec -- python -m venv .venv
-.venv/bin/python -m pip install -e .
-.venv/bin/python -m pip install pytest
+.venv/bin/python -m pip install -e ".[dev]"
 .venv/bin/pytest tests/ -q
 ```
 
 Core のパーサ（`contingency-dsl-py`）は別の兄弟パッケージであり、本パッケージ自身のユニットテストを動かすためには不要：Tier B パーサは拡張境界において既に評価されたキーワード引数の上で動作し、ネストされた Tier A 式はその境界では不透明な dict として扱われる。
+
+## 30 秒で動く例
+
+ABA 更新（renewal）の手続きをキーワード引数から組み立て、JSON にできる dict へ直列化して復元し、必須フィールドが欠けたときの挙動を見る:
+
+```python
+import json
+
+from contingency_respondent_dsl import MissingFieldError, from_dict, parse_primitive, to_dict
+
+# ABA 更新: 文脈 A で CS-US 対提示、文脈 B で消去、文脈 A でテスト。
+arguments = {
+    "acquisition": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+    "extinction": {"type": "Extinction", "cs": "tone"},
+    "test": {"type": "Extinction", "cs": "tone"},
+    "acquisition_context": "ctx_a",
+    "extinction_context": "ctx_b",
+    "test_context": "ctx_a",
+}
+node = parse_primitive("Renewal", keyword_args=arguments)
+ast = to_dict(node)  # 素の dict。そのまま json.dumps できる
+print(ast["type"], [ast[k] for k in ("acquisition_context", "extinction_context", "test_context")])
+# Renewal ['ctx_a', 'ctx_b', 'ctx_a']
+print(from_dict(json.loads(json.dumps(ast))) == node)  # True
+
+incomplete = {k: v for k, v in arguments.items() if k != "test_context"}
+try:
+    parse_primitive("Renewal", keyword_args=incomplete)
+except MissingFieldError as error:
+    print(error)  # missing required keyword(s) for Renewal: ['test_context']
+```
+
+この例は本パッケージだけで動く。`Renewal(acquisition = ..., ...)` のような DSL のソース文字列を読むのは Core のパーサ [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py)（`pip install contingency-dsl-py`）の役割で、本パッケージはそれに依存せず、評価済みの引数から始める。
+
+## 自作の 50 行では足りない理由
+
+実験ごとの dict や小さなクラスは手続きが 1 つなら足りるが、複数の Pavlov 型の実験計画を保存・比較・交換しはじめると破綻する:
+
+- **名前の付いた 26 手続き.** 阻止、隠蔽、overexpectation、潜在制止、更新、再生、自発的回復、条件性制止、条件性弁別（occasion setting）、peak procedure など 26 手続きを、フィールド名の固定された frozen dataclass として登録している。2 つの研究室が「阻止」を書けば同じ構造になる。
+- **適合性フィクスチャ.** `conformance/tier-b/` 配下の 26 ファイル・28 ケースが全プリミティブを網羅する。テストは各ケースを `parse_primitive` 経由と `from_dict` / `to_dict` 経由の両方で再生し、直列化した dict がフィクスチャと完全に一致することを求める。
+- **引数を検証する.** 未知の識別子は `UnknownPrimitiveError`、位置引数は `ArityError`、必須キーワードの欠落は `MissingFieldError`、想定外のキーワードは `UnknownFieldError` を送出し、不完全な実験計画を黙って保存しない。
+- **時間を検査する.** 時間フィールド（遅延制止の CS 持続時間と ISI など）は `{"value": 15, "unit": "s"}` か `(15, "s")` を受け付け、0 以下の値や `ms`・`s`・`min`・`h` 以外の単位は `ValueError` になる。
+- **Core に対して加法的.** プリミティブは Core のレスポンデント層を `ExtensionRespondentPrimitive` フック 1 つだけで拡張するので、Core のレスポンデントプリミティブ（`Pair.*`、`Extinction`、`CSOnly` など）だけを使うプログラムは影響を受けない。
 
 ## 使い方
 
@@ -116,14 +162,24 @@ from contingency_respondent_dsl import register
 
 bag: dict = {}
 ext = register(bag)   # dict: "respondent-tier-b" キーに ext を格納
-ext.parse_primitive("Renewal", None, { ... })
+assert bag["respondent-tier-b"] is ext
+node = ext.parse_primitive(
+    "LatentInhibition",
+    None,
+    {
+        "preexposure": {"type": "CSOnly", "cs": "tone"},
+        "training": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+        "test": {"type": "Extinction", "cs": "tone"},
+    },
+)
+print(type(node).__name__)  # LatentInhibition
 ```
 
 `register()` ヘルパは dict、`register_tier_b(ext)` メソッドを公開する任意のオブジェクト、または素の名前空間を受け付ける。
 
 ### カバレッジ状況
 
-26 プリミティブ全ての識別子は登録済み（未知の識別子は `UnknownPrimitiveError` を送出）。エンドツーエンドのパース経路は 5 つのデモ用プリミティブで検証済み；残りの 21 件については AST クラスは定義・登録されているが、往復経路はフィクスチャが埋まっている限りにおいて適合性ランナー内の `from_dict` / `to_dict` 経由でのみ実行される。
+26 プリミティブ全ての識別子は登録済み（未知の識別子は `UnknownPrimitiveError` を送出）。すべての適合性ケースを `parse_primitive` → `to_dict` と `from_dict` → `to_dict` の両経路で再生している。阻止・更新・潜在制止・隠蔽・再生の経路には、手書きのエンドツーエンドテストもある。
 
 ## ナビゲーション
 

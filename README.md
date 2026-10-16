@@ -3,7 +3,7 @@
 :jp: [日本語版 README](README.ja.md)
 
 Tier B Pavlovian (respondent) procedure extension for
-[`contingency-dsl`](../contingency-dsl/). This package defines 26 classical
+[`contingency-dsl`](https://github.com/OperantKit/contingency-dsl). This package defines 26 classical
 conditioning procedures that extend the Core respondent layer **without
 modifying** its grammar, by registering production rules through the
 `ExtensionRespondentPrimitive` extension point.
@@ -88,22 +88,23 @@ This package currently provides:
     constructors (`registry.py`).
   - A dict serializer compatible with the AST schema (`serializer.py`).
   - A thin `parse_primitive()` entrypoint (`parser.py`).
-- Conformance fixtures for 5 demonstration primitives (blocking, renewal,
-  latent inhibition, overshadowing, reinstatement) with concrete
-  `expected_ast` dicts. The remaining 21 fixtures have populated `input`
-  strings but retain `expected_ast: null` until their argument schemas
-  are exercised end-to-end through the parser.
+- Conformance fixtures for all 26 primitives (28 cases in 26 files under
+  `conformance/tier-b/`), each with an `input` string and a concrete
+  `expected_ast` dict.
 
-## Installation (for local development)
+## Installation
 
-This package uses `mise` + `venv` per the upstream OperantKit policy. `uv`
-is not used.
+```bash
+pip install git+https://github.com/OperantKit/contingency-respondent-dsl
+```
+
+For local development this package uses `mise` + `venv` per the upstream
+OperantKit policy. `uv` is not used.
 
 ```sh
 # From inside contingency-respondent-dsl/
 mise exec -- python -m venv .venv
-.venv/bin/python -m pip install -e .
-.venv/bin/python -m pip install pytest
+.venv/bin/python -m pip install -e ".[dev]"
 .venv/bin/pytest tests/ -q
 ```
 
@@ -112,6 +113,49 @@ is not required to exercise this package's own unit tests: the Tier B
 parser operates on already-evaluated keyword arguments at the extension
 boundary, and nested Tier A expressions are treated as opaque dicts on
 that boundary.
+
+## 30-second example
+
+Build an ABA renewal procedure from its keyword arguments, serialize it to a JSON-ready dict, restore it, and see what happens when a required field is missing:
+
+```python
+import json
+
+from contingency_respondent_dsl import MissingFieldError, from_dict, parse_primitive, to_dict
+
+# ABA renewal: CS-US pairing in context A, extinction in context B, test in context A.
+arguments = {
+    "acquisition": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+    "extinction": {"type": "Extinction", "cs": "tone"},
+    "test": {"type": "Extinction", "cs": "tone"},
+    "acquisition_context": "ctx_a",
+    "extinction_context": "ctx_b",
+    "test_context": "ctx_a",
+}
+node = parse_primitive("Renewal", keyword_args=arguments)
+ast = to_dict(node)  # plain dict, ready for json.dumps
+print(ast["type"], [ast[k] for k in ("acquisition_context", "extinction_context", "test_context")])
+# Renewal ['ctx_a', 'ctx_b', 'ctx_a']
+print(from_dict(json.loads(json.dumps(ast))) == node)  # True
+
+incomplete = {k: v for k, v in arguments.items() if k != "test_context"}
+try:
+    parse_primitive("Renewal", keyword_args=incomplete)
+except MissingFieldError as error:
+    print(error)  # missing required keyword(s) for Renewal: ['test_context']
+```
+
+The example needs only this package. Reading DSL source text such as `Renewal(acquisition = ..., ...)` is the job of the Core parser [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py) (`pip install contingency-dsl-py`); this package does not depend on it and starts from the already-evaluated arguments.
+
+## Why not a 50-line hand-written procedure record?
+
+A dict or a small class per experiment works for one procedure, but breaks once several Pavlovian designs have to be stored, compared, and exchanged:
+
+- **26 named procedures.** Blocking, overshadowing, overexpectation, latent inhibition, renewal, reinstatement, spontaneous recovery, conditioned inhibition, occasion setting, the peak procedure, and 16 others are registered as frozen dataclasses with fixed field names, so two labs writing "blocking" produce the same structure.
+- **Conformance fixtures.** 28 cases in 26 fixture files under `conformance/tier-b/` cover every primitive. The tests replay each case through `parse_primitive` and through `from_dict` / `to_dict` and require the serialized dict to match the fixture exactly.
+- **Arguments are validated.** An unknown identifier raises `UnknownPrimitiveError`, a positional argument raises `ArityError`, an omitted required keyword raises `MissingFieldError`, and an unexpected keyword raises `UnknownFieldError`, instead of silently storing an incomplete design.
+- **Durations are checked.** Duration fields (for example the CS duration and ISI in inhibition of delay) accept `{"value": 15, "unit": "s"}` or `(15, "s")`; a non-positive value or a unit other than `ms`, `s`, `min`, `h` raises `ValueError`.
+- **Additive to Core.** The primitives extend the Core respondent layer through the single `ExtensionRespondentPrimitive` hook, so programs that use only Core respondent primitives (`Pair.*`, `Extinction`, `CSOnly`, ...) are unaffected.
 
 ## Usage
 
@@ -152,7 +196,17 @@ from contingency_respondent_dsl import register
 
 bag: dict = {}
 ext = register(bag)   # dict: stores ext under "respondent-tier-b"
-ext.parse_primitive("Renewal", None, { ... })
+assert bag["respondent-tier-b"] is ext
+node = ext.parse_primitive(
+    "LatentInhibition",
+    None,
+    {
+        "preexposure": {"type": "CSOnly", "cs": "tone"},
+        "training": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+        "test": {"type": "Extinction", "cs": "tone"},
+    },
+)
+print(type(node).__name__)  # LatentInhibition
 ```
 
 The `register()` helper accepts a dict, any object exposing a
@@ -161,11 +215,10 @@ The `register()` helper accepts a dict, any object exposing a
 ### Coverage status
 
 All 26 primitive identifiers are registered (unknown identifiers raise
-`UnknownPrimitiveError`). End-to-end parse paths are validated for 5
-demonstration primitives; AST classes for the remaining 21 are defined
-and registered but their round-trip paths are exercised only through
-`from_dict` / `to_dict` in the conformance runner as their fixtures are
-populated.
+`UnknownPrimitiveError`). Every conformance case is replayed through
+`parse_primitive` → `to_dict` and through `from_dict` → `to_dict`; the
+blocking, renewal, latent inhibition, overshadowing, and reinstatement
+paths additionally have hand-written end-to-end tests.
 
 ## Navigation
 

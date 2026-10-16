@@ -1,0 +1,47 @@
+# contingency-respondent-dsl
+
+> Respondent (Pavlovian) procedure extension for contingency-dsl: 26 named conditioning procedures (blocking, overshadowing, latent inhibition, renewal, reinstatement, conditioned inhibition, occasion setting, the peak procedure, and others) as validated, frozen Python AST nodes with a JSON-ready dict round trip. Zero runtime dependencies.
+
+contingency-respondent-dsl is part of OperantKit, a set of Python/Rust packages for designing and running operant and respondent conditioning experiments (reinforcement schedules, session recording, analysis). Use it instead of hand-writing a record type for each Pavlovian design: every procedure has fixed field names, required and unexpected keywords are rejected with specific errors, and 28 conformance cases in 26 fixture files cover all primitives.
+
+## Install
+
+```bash
+pip install git+https://github.com/OperantKit/contingency-respondent-dsl
+```
+
+## Minimal example
+
+```python
+from contingency_respondent_dsl import from_dict, parse_primitive, to_dict
+
+node = parse_primitive(
+    "Renewal",
+    keyword_args={
+        "acquisition": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+        "extinction": {"type": "Extinction", "cs": "tone"},
+        "test": {"type": "Extinction", "cs": "tone"},
+        "acquisition_context": "ctx_a",
+        "extinction_context": "ctx_b",
+        "test_context": "ctx_a",
+    },
+)
+print(to_dict(node)["type"])  # Renewal
+print(from_dict(to_dict(node)) == node)  # True
+```
+
+The import name is `contingency_respondent_dsl`. Arguments are keyword-only and already evaluated (nested Core respondent expressions such as `Pair.ForwardDelay` or `Extinction` are plain dicts; durations are `{"value": 15, "unit": "s"}`). Errors: `UnknownPrimitiveError`, `ArityError`, `MissingFieldError`, `UnknownFieldError`. This package does not read DSL source text; that is the Core parser's job.
+
+## Docs
+
+- [README](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/README.md): scope, install, 30-second example, why not to hand-roll a procedure record, usage
+- [AGENTS.md](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/AGENTS.md): when to use this package and what not to do
+- [Grammar](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/spec/en/grammar.md): EBNF for the 26 primitives
+- [Primitive index](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/spec/en/tier-b-primitives/_index.md): operational definition and primary citation for each procedure
+
+## Related packages
+
+- [contingency-dsl](https://github.com/OperantKit/contingency-dsl): the language specification whose respondent layer this package extends
+- [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py): Python parser for the Core language (`pip install contingency-dsl-py`)
+- [contingency-py](https://github.com/OperantKit/contingency-py): reinforcement schedule engine for the operant side (`pip install contingency-py`)
+- [contingency-rs](https://github.com/OperantKit/contingency-rs): Rust schedule engine and parser
