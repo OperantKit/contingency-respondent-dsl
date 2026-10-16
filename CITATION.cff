@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "contingency-respondent-dsl"
+authors:
+  - family-names: "Mizutani"
+    given-names: "Yuto"
+repository-code: "https://github.com/OperantKit/contingency-respondent-dsl"
+license: MIT
+abstract: "Tier B Pavlovian (respondent) procedure extension for contingency-dsl. Provides 26 Pavlovian conditioning primitives (blocking, overshadowing, latent inhibition, renewal, reinstatement, etc.) that plug into the contingency-dsl Core via the Respondent extension point."
