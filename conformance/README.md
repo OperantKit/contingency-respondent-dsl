@@ -1,7 +1,7 @@
 # Conformance Fixtures — Tier B
 
 > Part of the `contingency-respondent-dsl` package. This directory holds
-> skeleton test fixtures, one JSON file per Tier B primitive.
+> test fixtures, one JSON file per Tier B primitive.
 
 ---
 
@@ -24,7 +24,7 @@ primitive. Each test case is an object with:
 | `id` | yes | Unique case identifier, kebab-case (e.g. `"blocking-basic"`). |
 | `comment` | yes | One-line description of what the case exercises. |
 | `input` | yes | The DSL string that the parser should consume. |
-| `expected_ast` | yes | Expected AST output. May be `null` with an associated `todo` field until a parser exists to validate against. |
+| `expected_ast` | yes | Expected AST output, mirroring [`../schema/ast.schema.json`](../schema/ast.schema.json). May be `null` with an associated `todo` field for a case whose expected AST is not yet written. |
 | `todo` | no | If `expected_ast` is `null`, this string documents what the expected AST should contain. |
 
 Future-extensible fields (`error`, `diagnostics`, `phase`) may be added
@@ -32,17 +32,16 @@ without breaking existing fixtures.
 
 ---
 
-## 2. Current status — design checkpoint
+## 2. Current status
 
-At this checkpoint the conformance directory holds **skeleton
-fixtures**: one representative valid input per primitive, with
-`expected_ast: null` and a `todo` description. A parser is not yet
-implemented; the skeletons exist to anchor the fixture format and to
-give a later parser implementation a concrete target.
-
-When a parser becomes available, each case's `expected_ast` should be
-filled in to mirror the structure declared by
-[`../schema/ast.schema.json`](../schema/ast.schema.json).
+All 26 primitives have a fixture file (28 cases in total), and every
+case has an `input` string and a concrete `expected_ast`; no case is
+`null`. The test suite (`tests/test_conformance.py`) round-trips each
+`expected_ast` through `from_dict` / `to_dict`, and
+`tests/test_tier_b_parser.py` dispatches each one through
+`parse_primitive()`. The `input` string is not re-parsed here, because
+this package does not read DSL source text; that is the Core parser's
+job.
 
 ---
 

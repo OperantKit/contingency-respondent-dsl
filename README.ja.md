@@ -56,7 +56,7 @@ contingency-respondent-dsl/
 - Core の `ExtensionRespondentPrimitive` を拡張する 26 の Pavlov 型手続きの EBNF 生成規則（[`spec/en/grammar.md`](spec/en/grammar.md) 参照）
 - 生成される AST ノードの JSON Schema（[`schema/ast.schema.json`](schema/ast.schema.json) 参照）
 - 主要 APA 引用付きの、プリミティブごとの操作的定義
-- Python パーサのスケルトン（`src/contingency_respondent_dsl/`）：
+- 26 プリミティブすべてを扱う Python パーサ（`src/contingency_respondent_dsl/`）：
   - 26 プリミティブ全てについて frozen dataclass（`ast.py`）
   - 識別子 + キーワード引数束を AST コンストラクタへディスパッチするレジストリ（`registry.py`）
   - AST スキーマ互換の dict シリアライザ（`serializer.py`）

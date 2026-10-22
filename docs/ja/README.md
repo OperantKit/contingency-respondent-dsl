@@ -16,12 +16,9 @@ Core に接続され、Core アーキテクチャに新しい層を追加しな�
 ヘッダでレジストリを宣言することで Tier B を有効化する（概念的:
 `import respondent_tier_b`）。Tier A には手を加えない。
 
-## ステータス — 仕様のみ
+## ステータス
 
-このパッケージには**まだパーサが存在しない**。統合は将来のパーサを
-通じて行われる。そのパーサは Core のパースツリーを消費し、Tier B
-識別子をこの拡張レジストリに渡す。本設計チェックポイントで本
-パッケージは以下を提供する:
+本パッケージは以下を提供する:
 
 - [`../../spec/ja/tier-b-primitives/`](../../spec/ja/tier-b-primitives/)
   におけるプリミティブ毎の操作的仕様と主要な APA 引用。
@@ -29,10 +26,16 @@ Core に接続され、Core アーキテクチャに新しい層を追加しな�
   26 個の Tier B 産出規則の EBNF 文法。
 - [`../../schema/ast.schema.json`](../../schema/ast.schema.json) における
   AST ノードの JSON Schema (2020-12)。
-- [`../../conformance/tier-b/`](../../conformance/tier-b/) における
-  適合性フィクスチャのスケルトン。
+- 26 プリミティブすべてを扱う Python パーサ（`src/contingency_respondent_dsl/`）。
+  `parse_primitive()` は Tier B 識別子と、拡張境界で評価済みの引数を
+  受け取り、frozen な AST ノードを返す。DSL のソース文字列は読まない。
+  表層構文の字句解析と構文解析は Core のパーサ
+  （[contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py)）の役割である。
+- 26 プリミティブすべての適合性フィクスチャ
+  （[`../../conformance/tier-b/`](../../conformance/tier-b/) 配下の 26 ファイル・28 ケース）。
+  各ケースに `input` 文字列と具体的な `expected_ast` がある。
 
-インストール手順は現時点では提供されない。
+インストール手順と実行できる例は [`../../README.ja.md`](../../README.ja.md) にある。
 
 ## 最初に読むべき場所
 

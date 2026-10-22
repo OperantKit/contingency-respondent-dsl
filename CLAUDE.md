@@ -76,10 +76,10 @@ Zero tolerance.
     with `schema/ast.schema.json`.
 - Tests under `tests/` covering AST construction, registry dispatch,
   end-to-end parser paths for 5 demonstration primitives (blocking,
-  renewal, latent inhibition, overshadowing, reinstatement), and
-  conformance-fixture replay. The remaining 21 fixtures have populated
-  `input` strings but retain `expected_ast: null` until their argument
-  schemas are exercised end-to-end through the parser.
+  renewal, latent inhibition, overshadowing, reinstatement), parametrized
+  dispatch coverage for the remaining 21, and conformance-fixture replay.
+  All 26 fixture files (28 cases) carry an `input` string and a concrete
+  `expected_ast`.
 
 ## Parser scope discipline
 

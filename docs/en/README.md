@@ -18,12 +18,9 @@ architecture. Programs activate Tier B by declaring the registry in
 their header (conceptual: `import respondent_tier_b`); Tier A stays
 untouched.
 
-## Status — specification only
+## Status
 
-There is **no parser** for this package yet. Integration happens via
-a future parser that consumes the Core parse tree and hands off Tier B
-identifiers to this extension registry. At this design checkpoint
-the package provides:
+The package provides:
 
 - Per-primitive operational specifications with primary APA citations
   in [`../../spec/en/tier-b-primitives/`](../../spec/en/tier-b-primitives/).
@@ -31,10 +28,18 @@ the package provides:
   [`../../schema/grammar.ebnf`](../../schema/grammar.ebnf).
 - A JSON Schema (2020-12) for AST nodes in
   [`../../schema/ast.schema.json`](../../schema/ast.schema.json).
-- Conformance fixture skeletons in
-  [`../../conformance/tier-b/`](../../conformance/tier-b/).
+- A Python parser for all 26 primitives (`src/contingency_respondent_dsl/`):
+  `parse_primitive()` takes a Tier B identifier and its already-evaluated
+  arguments at the extension boundary and returns a frozen AST node.
+  It does not read DSL source text; tokenizing and parsing the surface
+  syntax is the job of the Core parser
+  ([contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py)).
+- Conformance fixtures for all 26 primitives (28 cases in 26 files under
+  [`../../conformance/tier-b/`](../../conformance/tier-b/)), each with an
+  `input` string and a concrete `expected_ast`.
 
-No installation instructions are provided at this time.
+Installation and a runnable example are in
+[`../../README.md`](../../README.md).
 
 ## Where to start
 

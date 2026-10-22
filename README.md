@@ -82,7 +82,7 @@ This package currently provides:
 - A JSON Schema for the resulting AST nodes
   (see [`schema/ast.schema.json`](schema/ast.schema.json)).
 - Per-primitive operational definitions with primary APA citations.
-- A Python parser skeleton (`src/contingency_respondent_dsl/`) with:
+- A Python parser for all 26 primitives (`src/contingency_respondent_dsl/`) with:
   - Frozen dataclasses for all 26 primitives (`ast.py`).
   - A registry that dispatches identifier + keyword-args bags to AST
     constructors (`registry.py`).

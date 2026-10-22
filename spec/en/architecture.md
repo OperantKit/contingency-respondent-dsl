@@ -119,9 +119,10 @@ unknown `ExtensionRespondentPrimitive` is not silently accepted.
 - It does **not** introduce Turing completeness. Every Tier B primitive
   is a finite, declarative procedure whose parameters are literal values
   at parse time.
-- It does **not** write a parser. This checkpoint is specification only:
-  grammar, AST schema, conformance fixtures, and docs. A Python parser
-  is a separate follow-on effort.
+- It does **not** read DSL source text. The Python parser in this
+  package (`parse_primitive()`) starts from a Tier B identifier and its
+  already-evaluated arguments at the extension boundary; tokenizing and
+  parsing the surface syntax belongs to the Core parser.
 
 ---
 
