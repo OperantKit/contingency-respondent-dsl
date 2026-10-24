@@ -42,6 +42,6 @@ The import name is `contingency_respondent_dsl`. Arguments are keyword-only and 
 ## Related packages
 
 - [contingency-dsl](https://github.com/OperantKit/contingency-dsl): the language specification whose respondent layer this package extends
-- [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py): Python parser for the Core language (`pip install contingency-dsl-py`)
-- [contingency-py](https://github.com/OperantKit/contingency-py): reinforcement schedule engine for the operant side (`pip install contingency-py`)
+- [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py): Python parser for the Core language
+- [contingency-py](https://github.com/OperantKit/contingency-py): reinforcement schedule engine for the operant side
 - [contingency-rs](https://github.com/OperantKit/contingency-rs): Rust schedule engine and parser
