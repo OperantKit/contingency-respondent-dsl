@@ -2,121 +2,27 @@
 
 :jp: [日本語版 README](README.ja.md)
 
-Tier B Pavlovian (respondent) procedure extension for
-[`contingency-dsl`](https://github.com/OperantKit/contingency-dsl). This package defines 26 classical
-conditioning procedures that extend the Core respondent layer **without
-modifying** its grammar, by registering production rules through the
-`ExtensionRespondentPrimitive` extension point.
+contingency-respondent-dsl describes 26 Pavlovian (respondent) conditioning procedures, such as blocking, overshadowing, latent inhibition, renewal, and reinstatement, as records with fixed field names that can be stored, compared, and exchanged as JSON. It is for researchers who keep respondent designs in configuration files, analysis pipelines, or tests. It extends [contingency-dsl](https://github.com/OperantKit/contingency-dsl), the procedure notation of [OperantKit](https://github.com/OperantKit).
 
-## Relationship to `contingency-dsl`
+**In short**
 
-The Core package keeps the respondent layer deliberately minimal — only the
-foundational two-term contingency primitives (R1–R14: `Pair.*`, `Extinction`,
-`CSOnly`, `USOnly`, `Contingency`, `TrulyRandom`, `ExplicitlyUnpaired`,
-`Compound`, `Serial`, `ITI`, `Differential`). The Core respondent grammar
-exposes a single extension hook:
-
-```ebnf
-ExtensionRespondentPrimitive ::= Identifier "(" ArgList? ")"
-```
-
-Any third-party respondent vocabulary that needs deeper Pavlovian coverage
-registers its identifiers through this point. `contingency-respondent-dsl` is
-the first and canonical consumer.
-
-## Scope — 26 Tier B primitives
-
-Grouped by conceptual family (see [`spec/en/tier-b-primitives/_index.md`](spec/en/tier-b-primitives/_index.md)):
-
-- **Acquisition & higher-order** — higher-order conditioning (Pavlov, 1927;
-  Rizley & Rescorla, 1972), sensory preconditioning (Brogden, 1939),
-  counterconditioning (Dickinson & Pearce, 1977).
-- **Cue competition** — blocking (Kamin, 1969), overshadowing (Mackintosh,
-  1976), overexpectation (Rescorla, 1970), super-conditioning (Rescorla,
-  1971), retrospective revaluation (Van Hamme & Wasserman, 1994).
-- **Inhibitory learning** — conditioned inhibition (Rescorla, 1969),
-  occasion setting (Holland, 1983), inhibition of delay (Pavlov, 1927),
-  summation / retardation test (Rescorla, 1969).
-- **Preexposure** — latent inhibition (Lubow & Moore, 1959), US preexposure
-  (Randich & LoLordo, 1979).
-- **Extinction & recovery** — renewal (Bouton & Bolles, 1979), reinstatement
-  (Rescorla & Heth, 1975), spontaneous recovery (Rescorla, 2004), latent
-  extinction, Pavlovian partial-reinforcement extinction effect, contextual
-  extinction (Bouton, 2004), reconsolidation interference (Monfils et al.,
-  2009).
-- **Specialized procedures** — conditioned taste aversion (Garcia, Ervin, &
-  Koelling, 1966), stimulus generalization (Hovland, 1937), contextual fear
-  conditioning (Fanselow, 1990), peak procedure (Roberts, 1981), mediated
-  conditioning (Holland, 1981).
-
-## Repository layout
-
-```
-contingency-respondent-dsl/
-├── spec/en/                      formal specification (English canon)
-│   ├── architecture.md           how this package plugs into Core
-│   ├── design-philosophy.md      additive-only extension discipline
-│   ├── integration-with-core.md  extension-point contract
-│   ├── grammar.md                EBNF for all 26 Tier B primitives
-│   ├── theory.md                 Pavlovian learning framework (pointer-level)
-│   └── tier-b-primitives/        one file per primitive + _index.md
-├── spec/ja/                      Japanese mirror of spec/en/
-├── schema/
-│   ├── grammar.ebnf              the 26 Tier B productions
-│   ├── ast.schema.json           JSON Schema 2020-12 for AST nodes
-│   └── extension-registry.md     how a program loads this registry
-├── conformance/
-│   ├── README.md
-│   └── tier-b/                   one .json fixture file per primitive
-└── docs/
-    ├── en/README.md
-    └── ja/README.md
-```
-
-## Status
-
-This package currently provides:
-
-- The EBNF productions for 26 Pavlovian procedures that extend Core's
-  `ExtensionRespondentPrimitive` (see [`spec/en/grammar.md`](spec/en/grammar.md)).
-- A JSON Schema for the resulting AST nodes
-  (see [`schema/ast.schema.json`](schema/ast.schema.json)).
-- Per-primitive operational definitions with primary APA citations.
-- A Python parser for all 26 primitives (`src/contingency_respondent_dsl/`) with:
-  - Frozen dataclasses for all 26 primitives (`ast.py`).
-  - A registry that dispatches identifier + keyword-args bags to AST
-    constructors (`registry.py`).
-  - A dict serializer compatible with the AST schema (`serializer.py`).
-  - A thin `parse_primitive()` entrypoint (`parser.py`).
-- Conformance fixtures for all 26 primitives (28 cases in 26 files under
-  `conformance/tier-b/`), each with an `input` string and a concrete
-  `expected_ast` dict.
+- Each procedure has one fixed set of fields, so two labs that write down "blocking" produce the same record.
+- A missing, misspelled, or extra field raises an error instead of storing an incomplete design.
+- Records convert to and from plain dictionaries that follow the JSON Schema in `schema/`.
 
 ## Installation
+
+Python 3.11 or newer. The package is not on PyPI yet; install it from GitHub:
 
 ```bash
 pip install git+https://github.com/OperantKit/contingency-respondent-dsl
 ```
 
-For local development this package uses `mise` + `venv` per the upstream
-OperantKit policy. `uv` is not used.
+It has no dependencies.
 
-```sh
-# From inside contingency-respondent-dsl/
-mise exec -- python -m venv .venv
-.venv/bin/python -m pip install -e ".[dev]"
-.venv/bin/pytest tests/ -q
-```
+## Example
 
-The Core parser (`contingency-dsl-py`) is a separate sibling package and
-is not required to exercise this package's own unit tests: the Tier B
-parser operates on already-evaluated keyword arguments at the extension
-boundary, and nested Tier A expressions are treated as opaque dicts on
-that boundary.
-
-## 30-second example
-
-Build an ABA renewal procedure from its keyword arguments, serialize it to a JSON-ready dict, restore it, and see what happens when a required field is missing:
+Build an ABA renewal procedure (Bouton & Bolles, 1979) from its fields, convert it to a JSON-ready dictionary and back, and see what happens when a required field is missing:
 
 ```python
 import json
@@ -145,108 +51,60 @@ except MissingFieldError as error:
     print(error)  # missing required keyword(s) for Renewal: ['test_context']
 ```
 
-The example needs only this package. Reading DSL source text such as `Renewal(acquisition = ..., ...)` is the job of the Core parser [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py) (`pip install contingency-dsl-py`); this package does not depend on it and starts from the already-evaluated arguments.
+`parse_primitive` returns a frozen dataclass (`contingency_respondent_dsl.ast.Renewal` here). An unknown procedure name raises `UnknownPrimitiveError`, a positional argument raises `ArityError`, and an unexpected field raises `UnknownFieldError`. Durations are written as `{"value": 15, "unit": "s"}` or `(15, "s")`; a value that is not positive, or a unit other than `ms`, `s`, `min`, `h`, raises `ValueError`.
 
-## Why not a 50-line hand-written procedure record?
+## The 26 procedures
 
-A dict or a small class per experiment works for one procedure, but breaks once several Pavlovian designs have to be stored, compared, and exchanged:
+| Family | Identifiers |
+|---|---|
+| Acquisition and higher-order | `HigherOrderConditioning`, `SensoryPreconditioning`, `Counterconditioning` |
+| Cue competition | `Blocking`, `Overshadowing`, `Overexpectation`, `SuperConditioning`, `RetrospectiveRevaluation` |
+| Inhibitory learning | `ConditionedInhibition`, `OccasionSetting`, `InhibitionOfDelay`, `SummationRetardationTest` |
+| Preexposure | `LatentInhibition`, `USPreexposure` |
+| Extinction and recovery | `Renewal`, `Reinstatement`, `SpontaneousRecovery`, `LatentExtinction`, `PavlovianPREE`, `ContextualExtinction`, `ReconsolidationInterference` |
+| Specialized procedures | `ConditionedTasteAversion`, `StimulusGeneralization`, `ContextualFearConditioning`, `PeakProcedure`, `MediatedConditioning` |
 
-- **26 named procedures.** Blocking, overshadowing, overexpectation, latent inhibition, renewal, reinstatement, spontaneous recovery, conditioned inhibition, occasion setting, the peak procedure, and 16 others are registered as frozen dataclasses with fixed field names, so two labs writing "blocking" produce the same structure.
-- **Conformance fixtures.** 28 cases in 26 fixture files under `conformance/tier-b/` cover every primitive. The tests replay each case through `parse_primitive` and through `from_dict` / `to_dict` and require the serialized dict to match the fixture exactly.
-- **Arguments are validated.** An unknown identifier raises `UnknownPrimitiveError`, a positional argument raises `ArityError`, an omitted required keyword raises `MissingFieldError`, and an unexpected keyword raises `UnknownFieldError`, instead of silently storing an incomplete design.
-- **Durations are checked.** Duration fields (for example the CS duration and ISI in inhibition of delay) accept `{"value": 15, "unit": "s"}` or `(15, "s")`; a non-positive value or a unit other than `ms`, `s`, `min`, `h` raises `ValueError`.
-- **Additive to Core.** The primitives extend the Core respondent layer through the single `ExtensionRespondentPrimitive` hook, so programs that use only Core respondent primitives (`Pair.*`, `Extinction`, `CSOnly`, ...) are unaffected.
+Each procedure has its own page with an operational definition, its fields, and its primary citations; start from the [index](spec/en/tier-b-primitives/_index.md).
 
-## Usage
+## Relationship to contingency-dsl
 
-```python
-from contingency_respondent_dsl import (
-    parse_primitive,
-    to_dict,
-    from_dict,
-)
+contingency-dsl keeps its respondent layer small: pairing (`Pair.*`), `Extinction`, `CSOnly`, `USOnly`, `Contingency`, `TrulyRandom`, `ExplicitlyUnpaired`, `Compound`, `Serial`, `ITI`, and `Differential` (the "Tier A" primitives). Procedures that combine several of these over phases, such as the 26 above (the "Tier B" primitives), are added through a single extension point in the Core respondent grammar, without changing that grammar:
 
-node = parse_primitive(
-    "Blocking",
-    positional_args=[],
-    keyword_args={
-        "phase1": {"type": "Pair.ForwardDelay", "cs": "a", "us": "shock"},
-        "phase2": {
-            "type": "Pair.ForwardDelay",
-            "cs": {"type": "Compound", "elements": ["a", "x"]},
-            "us": "shock",
-        },
-        "test":   {"type": "Extinction", "cs": "x"},
-        "phase1_trials": 40,
-        "phase2_trials": 20,
-        "test_trials":   10,
-    },
-)
-# node is a frozen contingency_respondent_dsl.ast.Blocking instance
-
-serialized = to_dict(node)  # -> schema-shaped dict
-restored   = from_dict(serialized)
-assert restored == node
+```ebnf
+ExtensionRespondentPrimitive ::= Identifier "(" ArgList? ")"
 ```
 
-To attach the Tier B extension to a registry-like object:
+`contingency-respondent-dsl` is the first and canonical consumer of this extension point. Programs that use only the Core respondent primitives are unaffected by it.
 
-```python
-from contingency_respondent_dsl import register
+## What is in this repository
 
-bag: dict = {}
-ext = register(bag)   # dict: stores ext under "respondent-tier-b"
-assert bag["respondent-tier-b"] is ext
-node = ext.parse_primitive(
-    "LatentInhibition",
-    None,
-    {
-        "preexposure": {"type": "CSOnly", "cs": "tone"},
-        "training": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
-        "test": {"type": "Extinction", "cs": "tone"},
-    },
-)
-print(type(node).__name__)  # LatentInhibition
+- `spec/en/`, `spec/ja/`: the specification (architecture, how it plugs into Core, grammar, theory, one page per procedure)
+- `schema/`: the EBNF grammar of the 26 procedures (`grammar.ebnf`), the JSON Schema of the records (`ast.schema.json`), and how a program loads the extension (`extension-registry.md`)
+- `conformance/tier-b/`: 28 test cases in 26 files, one file per procedure, each with an input string and the expected record
+- `src/contingency_respondent_dsl/`: the Python package (`parse_primitive`, `to_dict`, `from_dict`, `register`)
+
+## Limitations
+
+- This package does not read DSL text. It starts from the procedure name and its already-evaluated fields; reading text such as `Renewal(acquisition = ..., ...)` is the job of the Core parser [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py). contingency-dsl-py does not parse these identifiers, and `TierBExtension` cannot be passed to its `ExtensionRegistry` as it is (it has no `annotation_keywords`), so text cannot be read end to end with the two packages.
+- It describes procedures; it does not run sessions or simulate conditioning.
+- The primary sources for `LatentExtinction` and `PavlovianPREE` are marked in the [index](spec/en/tier-b-primitives/_index.md) as requiring verification.
+
+## For contributors
+
+```bash
+git clone https://github.com/OperantKit/contingency-respondent-dsl
+cd contingency-respondent-dsl
+mise exec -- python -m venv .venv
+.venv/bin/python -m pip install -e ".[dev]"
+.venv/bin/python -m pytest -q
 ```
 
-The `register()` helper accepts a dict, any object exposing a
-`register_tier_b(ext)` method, or a plain namespace.
+The tests do not need contingency-dsl-py. Every `python` block in this README and in `README.ja.md` is run by `tests/test_readme_examples.py`. Notes for AI coding agents are in [AGENTS.md](AGENTS.md).
 
-### Coverage status
+## References
 
-All 26 primitive identifiers are registered (unknown identifiers raise
-`UnknownPrimitiveError`). Every conformance case is replayed through
-`parse_primitive` → `to_dict` and through `from_dict` → `to_dict`; the
-blocking, renewal, latent inhibition, overshadowing, and reinstatement
-paths additionally have hand-written end-to-end tests.
+- Bouton, M. E., & Bolles, R. C. (1979). Contextual control of the extinction of conditioned fear. *Learning and Motivation*, 10(4), 445–466. https://doi.org/10.1016/0023-9690(79)90057-2
 
-## Navigation
+## Citation and license
 
-- Formal specification (English): [`spec/en/`](spec/en/)
-- Formal specification (Japanese): [`spec/ja/`](spec/ja/)
-- EBNF grammar: [`schema/grammar.ebnf`](schema/grammar.ebnf)
-- AST JSON Schema: [`schema/ast.schema.json`](schema/ast.schema.json)
-- Per-primitive index: [`spec/en/tier-b-primitives/_index.md`](spec/en/tier-b-primitives/_index.md)
-- Conformance fixtures: [`conformance/tier-b/`](conformance/tier-b/)
-
-## References (selected)
-
-- Bouton, M. E. (2004). Context and behavioral processes in extinction.
-  *Learning & Memory*, 11(5), 485–494. https://doi.org/10.1101/lm.78804
-- Kamin, L. J. (1969). Predictability, surprise, attention, and
-  conditioning. In B. A. Campbell & R. M. Church (Eds.), *Punishment and
-  aversive behavior* (pp. 279–296). Appleton-Century-Crofts.
-- Mackintosh, N. J. (1975). A theory of attention: Variations in the
-  associability of stimuli with reinforcement. *Psychological Review*,
-  82(4), 276–298. https://doi.org/10.1037/h0076778
-- Pavlov, I. P. (1927). *Conditioned reflexes*. Oxford University Press.
-- Pearce, J. M., & Hall, G. (1980). A model for Pavlovian learning:
-  Variations in the effectiveness of conditioned but not of unconditioned
-  stimuli. *Psychological Review*, 87(6), 532–552.
-  https://doi.org/10.1037/0033-295X.87.6.532
-- Rescorla, R. A. (1967). Pavlovian conditioning and its proper control
-  procedures. *Psychological Review*, 74(1), 71–80.
-  https://doi.org/10.1037/h0024109
-- Rescorla, R. A., & Wagner, A. R. (1972). A theory of Pavlovian
-  conditioning. In A. H. Black & W. F. Prokasy (Eds.), *Classical
-  conditioning II* (pp. 64–99). Appleton-Century-Crofts.
+Cite this package with [CITATION.cff](CITATION.cff). MIT License; see [LICENSE](LICENSE).
