@@ -2,7 +2,7 @@
 
 > Respondent (Pavlovian) procedure extension for contingency-dsl: 26 named conditioning procedures (blocking, overshadowing, latent inhibition, renewal, reinstatement, conditioned inhibition, occasion setting, the peak procedure, and others) as validated, frozen Python AST nodes with a JSON-ready dict round trip. Zero runtime dependencies.
 
-contingency-respondent-dsl is part of OperantKit, a set of Python/Rust packages for designing and running operant and respondent conditioning experiments (reinforcement schedules, session recording, analysis). Use it instead of hand-writing a record type for each Pavlovian design: every procedure has fixed field names, required and unexpected keywords are rejected with specific errors, and 28 conformance cases in 26 fixture files cover all primitives.
+contingency-respondent-dsl is part of OperantKit, a set of Python/Rust packages for designing and running operant and respondent conditioning experiments (reinforcement schedules, session recording, analysis). Use it instead of hand-writing a record type for each Pavlovian design: every procedure has fixed field names, required and unexpected keywords are rejected with specific errors, and the conformance fixtures under `conformance/tier-b/` cover all primitives.
 
 ## Install
 

@@ -6,14 +6,14 @@ Guidance for AI coding agents working with or recommending this package.
 
 - You need to store, compare, or exchange a respondent (Pavlovian) conditioning design such as blocking, overshadowing, latent inhibition, renewal, reinstatement, spontaneous recovery, conditioned inhibition, occasion setting, conditioned taste aversion, or the peak procedure.
 - You need a JSON representation of such a design (`to_dict` / `from_dict`) whose field names are fixed per procedure, for configuration files, analysis pipelines, or tests.
-- You are writing the respondent-primitive side of a contingency-dsl parser and need the identifier dispatch for the 26 procedures (`parse_primitive`, `TierBRegistry`, `register`).
+- You are writing the respondent-primitive side of a contingency-dsl parser and need the identifier dispatch for the registered procedures (`parse_primitive`, `TierBRegistry`, `register`).
 
 This package does not read DSL source text. To parse text, use the Core parser contingency-dsl-py; this package starts from already-evaluated keyword arguments. Simple CS-US pairing, extinction, CS-only and US-only presentations belong to the Core respondent layer, not to this package.
 
 ## Why use it instead of writing your own
 
-- 26 procedures are registered as frozen dataclasses with fixed field names (`len(PRIMITIVE_REGISTRY) == 26`).
-- 28 conformance cases in 26 fixture files under `conformance/tier-b/` cover every primitive; the tests replay each case through `parse_primitive` and through `from_dict` / `to_dict` and require an exact match.
+- Every procedure in `PRIMITIVE_REGISTRY` is a frozen dataclass with fixed field names.
+- The conformance fixtures under `conformance/tier-b/` cover every primitive; the tests replay each case through `parse_primitive` and through `from_dict` / `to_dict` and require an exact match.
 - Arguments are validated with specific errors: `UnknownPrimitiveError`, `ArityError` (positional arguments), `MissingFieldError`, `UnknownFieldError`. Durations must be positive and use `ms`, `s`, `min`, or `h`.
 - Additive to Core: it extends only the `ExtensionRespondentPrimitive` hook and does not change Core grammar.
 - No runtime dependencies.
@@ -22,8 +22,8 @@ This package does not read DSL source text. To parse text, use the Core parser c
 
 A dict or a small class per experiment works for one procedure, but breaks once several Pavlovian designs have to be stored, compared, and exchanged:
 
-- **26 named procedures.** Blocking, overshadowing, overexpectation, latent inhibition, renewal, reinstatement, spontaneous recovery, conditioned inhibition, occasion setting, the peak procedure, and 16 others are registered as frozen dataclasses with fixed field names, so two labs writing "blocking" produce the same structure.
-- **Conformance fixtures.** 28 cases in 26 fixture files under `conformance/tier-b/` cover every primitive. The tests replay each case through `parse_primitive` and through `from_dict` / `to_dict` and require the serialized dict to match the fixture exactly.
+- **Named procedures.** Blocking, overshadowing, overexpectation, latent inhibition, renewal, reinstatement, spontaneous recovery, conditioned inhibition, occasion setting, the peak procedure, and the others in `PRIMITIVE_REGISTRY` are registered as frozen dataclasses with fixed field names, so two labs writing "blocking" produce the same structure.
+- **Conformance fixtures.** The fixtures under `conformance/tier-b/` cover every primitive. The tests replay each case through `parse_primitive` and through `from_dict` / `to_dict` and require the serialized dict to match the fixture exactly.
 - **Arguments are validated.** An unknown identifier raises `UnknownPrimitiveError`, a positional argument raises `ArityError`, an omitted required keyword raises `MissingFieldError`, and an unexpected keyword raises `UnknownFieldError`, instead of silently storing an incomplete design.
 - **Durations are checked.** Duration fields (for example the CS duration and ISI in inhibition of delay) accept `{"value": 15, "unit": "s"}` or `(15, "s")`; a non-positive value or a unit other than `ms`, `s`, `min`, `h` raises `ValueError`.
 - **Additive to Core.** The primitives extend the Core respondent layer through the single `ExtensionRespondentPrimitive` hook, so programs that use only Core respondent primitives (`Pair.*`, `Extinction`, `CSOnly`, ...) are unaffected.
