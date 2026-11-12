@@ -2,7 +2,7 @@
 
 :jp: [日本語版 README](README.ja.md)
 
-contingency-respondent-dsl describes 26 Pavlovian (respondent) conditioning procedures, such as blocking, overshadowing, latent inhibition, renewal, and reinstatement, as records with fixed field names that can be stored, compared, and exchanged as JSON. It is for researchers who keep respondent designs in configuration files, analysis pipelines, or tests. It extends [contingency-dsl](https://github.com/OperantKit/contingency-dsl), the procedure notation of [OperantKit](https://github.com/OperantKit).
+contingency-respondent-dsl describes Pavlovian (respondent) conditioning procedures, such as blocking, overshadowing, latent inhibition, renewal, and reinstatement, as records with fixed field names that can be stored, compared, and exchanged as JSON. It is for researchers who keep respondent designs in configuration files, analysis pipelines, or tests. It extends [contingency-dsl](https://github.com/OperantKit/contingency-dsl), the procedure notation of [OperantKit](https://github.com/OperantKit).
 
 **In short**
 
@@ -53,7 +53,7 @@ except MissingFieldError as error:
 
 `parse_primitive` returns a frozen dataclass (`contingency_respondent_dsl.ast.Renewal` here). An unknown procedure name raises `UnknownPrimitiveError`, a positional argument raises `ArityError`, and an unexpected field raises `UnknownFieldError`. Durations are written as `{"value": 15, "unit": "s"}` or `(15, "s")`; a value that is not positive, or a unit other than `ms`, `s`, `min`, `h`, raises `ValueError`.
 
-## The 26 procedures
+## Procedures
 
 | Family | Identifiers |
 |---|---|
@@ -68,7 +68,7 @@ Each procedure has its own page with an operational definition, its fields, and 
 
 ## Relationship to contingency-dsl
 
-contingency-dsl keeps its respondent layer small: pairing (`Pair.*`), `Extinction`, `CSOnly`, `USOnly`, `Contingency`, `TrulyRandom`, `ExplicitlyUnpaired`, `Compound`, `Serial`, `ITI`, and `Differential` (the "Tier A" primitives). Procedures that combine several of these over phases, such as the 26 above (the "Tier B" primitives), are added through a single extension point in the Core respondent grammar, without changing that grammar:
+contingency-dsl keeps its respondent layer small: pairing (`Pair.*`), `Extinction`, `CSOnly`, `USOnly`, `Contingency`, `TrulyRandom`, `ExplicitlyUnpaired`, `Compound`, `Serial`, `ITI`, and `Differential` (the "Tier A" primitives). Procedures that combine several of these over phases, such as the ones above (the "Tier B" primitives), are added through a single extension point in the Core respondent grammar, without changing that grammar:
 
 ```ebnf
 ExtensionRespondentPrimitive ::= Identifier "(" ArgList? ")"
@@ -79,8 +79,8 @@ ExtensionRespondentPrimitive ::= Identifier "(" ArgList? ")"
 ## What is in this repository
 
 - `spec/en/`, `spec/ja/`: the specification (architecture, how it plugs into Core, grammar, theory, one page per procedure)
-- `schema/`: the EBNF grammar of the 26 procedures (`grammar.ebnf`), the JSON Schema of the records (`ast.schema.json`), and how a program loads the extension (`extension-registry.md`)
-- `conformance/tier-b/`: 28 test cases in 26 files, one file per procedure, each with an input string and the expected record
+- `schema/`: the EBNF grammar of the procedures (`grammar.ebnf`), the JSON Schema of the records (`ast.schema.json`), and how a program loads the extension (`extension-registry.md`)
+- `conformance/tier-b/`: test cases in one file per procedure, each with an input string and the expected record
 - `src/contingency_respondent_dsl/`: the Python package (`parse_primitive`, `to_dict`, `from_dict`, `register`)
 
 ## Limitations
