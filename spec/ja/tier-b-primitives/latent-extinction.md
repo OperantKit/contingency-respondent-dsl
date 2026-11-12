@@ -46,9 +46,8 @@ LatentExtinction(
 - Bouton, M. E. (2004). Context and behavioral processes in
   extinction. *Learning & Memory*, 11(5), 485–494.
   https://doi.org/10.1101/lm.78804
-- Seward, J. P., & Levy, N. (1949). Latent extinction: Sign learning
-  as a factor in extinction. *Journal of Experimental Psychology*,
-  39(5), 660–668. https://doi.org/10.1037/h0057426 *(道具的原型。
+- Seward, J. P., & Levy, N. (1949). Sign learning as a factor in extinction. *Journal of Experimental Psychology*,
+  39(5), 660–668. https://doi.org/10.1037/h0060914 *(道具的原型。
   パヴロフ型形式は Bouton の検索的枠組みから外挿)*
 
 ## 関連プリミティブ
