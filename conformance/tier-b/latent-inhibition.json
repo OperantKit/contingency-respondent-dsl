@@ -7,7 +7,7 @@
       "type": "LatentInhibition",
       "preexposure": {"type": "CSOnly", "cs": "tone", "trials": 80},
       "training": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "tone",
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},

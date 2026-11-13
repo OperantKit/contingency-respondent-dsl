@@ -6,22 +6,22 @@
     "expected_ast": {
       "type": "Overexpectation",
       "phase1_a": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "a",
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},
         "cs_duration": {"value": 15, "unit": "s"}
       },
       "phase1_b": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "b",
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},
         "cs_duration": {"value": 15, "unit": "s"}
       },
       "phase2_compound": {
-        "type": "Pair.ForwardDelay",
-        "cs": {"type": "Compound", "elements": ["a", "b"]},
+        "type": "PairForwardDelay",
+        "cs": {"type": "Compound", "cs_list": ["a", "b"]},
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},
         "cs_duration": {"value": 15, "unit": "s"}

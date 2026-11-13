@@ -7,7 +7,7 @@
       "type": "USPreexposure",
       "preexposure": {"type": "USOnly", "us": "shock", "trials": 40},
       "training": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "tone",
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},

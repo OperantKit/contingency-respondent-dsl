@@ -18,7 +18,7 @@ from contingency_respondent_dsl import from_dict, parse_primitive, to_dict
 node = parse_primitive(
     "Renewal",
     keyword_args={
-        "acquisition": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+        "acquisition": {"type": "PairForwardDelay", "cs": "tone", "us": "shock", "isi": {"value": 10, "unit": "s"}, "cs_duration": {"value": 15, "unit": "s"}},
         "extinction": {"type": "Extinction", "cs": "tone"},
         "test": {"type": "Extinction", "cs": "tone"},
         "acquisition_context": "ctx_a",

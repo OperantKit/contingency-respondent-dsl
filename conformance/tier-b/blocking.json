@@ -6,15 +6,15 @@
     "expected_ast": {
       "type": "Blocking",
       "phase1": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "a",
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},
         "cs_duration": {"value": 15, "unit": "s"}
       },
       "phase2": {
-        "type": "Pair.ForwardDelay",
-        "cs": {"type": "Compound", "elements": ["a", "x"]},
+        "type": "PairForwardDelay",
+        "cs": {"type": "Compound", "cs_list": ["a", "x"]},
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},
         "cs_duration": {"value": 15, "unit": "s"}

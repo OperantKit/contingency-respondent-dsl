@@ -6,7 +6,7 @@
     "expected_ast": {
       "type": "StimulusGeneralization",
       "training": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "tone_1000hz",
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},

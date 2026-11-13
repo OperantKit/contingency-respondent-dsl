@@ -9,15 +9,15 @@
         "type": "Serial",
         "elements": [
           {
-            "type": "Pair.ForwardDelay",
+            "type": "PairForwardDelay",
             "cs": "a",
             "us": "shock",
             "isi": {"value": 10, "unit": "s"},
             "cs_duration": {"value": 15, "unit": "s"}
           },
           {
-            "type": "Pair.ForwardDelay",
-            "cs": {"type": "Compound", "elements": ["a", "i"]},
+            "type": "PairForwardDelay",
+            "cs": {"type": "Compound", "cs_list": ["a", "i"]},
             "us": "nothing",
             "isi": {"value": 10, "unit": "s"},
             "cs_duration": {"value": 15, "unit": "s"}

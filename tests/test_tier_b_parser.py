@@ -41,7 +41,7 @@ def _roundtrip_equal(node: object) -> None:
 # test isolated from Core's Tier A AST schema while still validating
 # the Tier B seam.
 TONE_SHOCK_PAIR = {
-    "type": "Pair.ForwardDelay",
+    "type": "PairForwardDelay",
     "cs": "tone", "us": "shock",
     "isi": {"value": 10, "unit": "s"},
     "cs_duration": {"value": 15, "unit": "s"},
@@ -55,8 +55,8 @@ EXTINCTION_TONE = {"type": "Extinction", "cs": "tone"}
 # ---------------------------------------------------------------------------
 
 COMPOUND_AX_SHOCK_PAIR = {
-    "type": "Pair.ForwardDelay",
-    "cs": {"type": "Compound", "elements": ["tone_a", "tone_x"]},
+    "type": "PairForwardDelay",
+    "cs": {"type": "Compound", "cs_list": ["tone_a", "tone_x"]},
     "us": "shock",
     "isi": {"value": 10, "unit": "s"},
     "cs_duration": {"value": 15, "unit": "s"},
@@ -211,10 +211,10 @@ def test_latent_inhibition_trials_optional():
 
 def test_overshadowing_full_roundtrip():
     compound_training = {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": {
             "type": "Compound",
-            "elements": ["loud_tone", "dim_light"],
+            "cs_list": ["loud_tone", "dim_light"],
         },
         "us": "shock",
         "isi": {"value": 10, "unit": "s"},
@@ -239,7 +239,7 @@ def test_overshadowing_full_roundtrip():
     assert serialized["type"] == "Overshadowing"
     # Compound-typed CS preserved inside the training expression
     assert serialized["training"]["cs"]["type"] == "Compound"
-    assert serialized["training"]["cs"]["elements"] == ["loud_tone", "dim_light"]
+    assert serialized["training"]["cs"]["cs_list"] == ["loud_tone", "dim_light"]
     _roundtrip_equal(node)
 
 

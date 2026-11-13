@@ -31,7 +31,7 @@ from contingency_respondent_dsl import MissingFieldError, from_dict, parse_primi
 
 # ABA renewal: CS-US pairing in context A, extinction in context B, test in context A.
 arguments = {
-    "acquisition": {"type": "Pair.ForwardDelay", "cs": "tone", "us": "shock"},
+    "acquisition": {"type": "PairForwardDelay", "cs": "tone", "us": "shock", "isi": {"value": 10, "unit": "s"}, "cs_duration": {"value": 15, "unit": "s"}},
     "extinction": {"type": "Extinction", "cs": "tone"},
     "test": {"type": "Extinction", "cs": "tone"},
     "acquisition_context": "ctx_a",

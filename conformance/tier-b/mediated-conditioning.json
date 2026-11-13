@@ -6,14 +6,14 @@
     "expected_ast": {
       "type": "MediatedConditioning",
       "phase1": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "tone",
         "us": "flavor",
         "isi": {"value": 5, "unit": "s"},
         "cs_duration": {"value": 10, "unit": "s"}
       },
       "phase2": {
-        "type": "Pair.ForwardDelay",
+        "type": "PairForwardDelay",
         "cs": "tone",
         "us": "lithium",
         "isi": {"value": 5, "unit": "s"},

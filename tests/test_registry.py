@@ -67,8 +67,8 @@ def test_blocking_roundtrip_via_registry():
         "Blocking",
         None,
         {
-            "phase1": {"type": "Pair.ForwardDelay", "cs": "a", "us": "shock"},
-            "phase2": {"type": "Pair.ForwardDelay", "cs": "a+x", "us": "shock"},
+            "phase1": {"type": "PairForwardDelay", "cs": "a", "us": "shock"},
+            "phase2": {"type": "PairForwardDelay", "cs": "a+x", "us": "shock"},
             "test": {"type": "Extinction", "cs": "x"},
             "phase1_trials": 40,
             "phase2_trials": 20,
@@ -124,7 +124,7 @@ def test_duration_coercion_on_wire_shape():
         "SpontaneousRecovery",
         None,
         {
-            "acquisition": {"type": "Pair.ForwardDelay"},
+            "acquisition": {"type": "PairForwardDelay"},
             "extinction": {"type": "Extinction"},
             "retention_interval": {"value": 24, "unit": "h"},
             "test": {"type": "Extinction"},
