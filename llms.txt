@@ -34,7 +34,7 @@ The import name is `contingency_respondent_dsl`. Arguments are keyword-only and 
 
 ## Docs
 
-- [README](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/README.md): scope, install, 30-second example, why not to hand-roll a procedure record, usage
+- [README](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/README.md): scope, install, example, why not to hand-roll a procedure record, usage
 - [AGENTS.md](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/AGENTS.md): when to use this package and what not to do
 - [Grammar](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/spec/en/grammar.md): EBNF for the 26 primitives
 - [Primitive index](https://github.com/OperantKit/contingency-respondent-dsl/blob/main/spec/en/tier-b-primitives/_index.md): operational definition and primary citation for each procedure
