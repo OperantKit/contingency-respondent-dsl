@@ -2,7 +2,7 @@
 
 :gb: [English README](README.md)
 
-contingency-respondent-dsl は、阻止・隠蔽・潜在制止・リニューアル・復位などの Pavlov 型（レスポンデント）条件づけの手続きを、項目名の決まったレコードとして表し、JSON として保存・比較・交換できるようにします。レスポンデントのデザインを設定ファイル・分析の処理・テストで扱う研究者のためのものです。[OperantKit](https://github.com/OperantKit) の手続きの記法 [contingency-dsl](https://github.com/OperantKit/contingency-dsl) を拡張します。
+contingency-respondent-dsl は、阻止・隠蔽・潜在制止・リニューアル・復位などの Pavlov 型 (レスポンデント) 条件づけの手続きを、項目名の決まったレコードとして表し、JSON として保存・比較・交換できるようにします。レスポンデントのデザインを設定ファイル・分析の処理・テストで扱う研究者のためのものです。[OperantKit](https://github.com/OperantKit) の手続きの記法 [contingency-dsl](https://github.com/OperantKit/contingency-dsl) を拡張します。
 
 **要点**
 
@@ -22,7 +22,7 @@ pip install git+https://github.com/OperantKit/contingency-respondent-dsl
 
 ## 例
 
-ABA リニューアル（Bouton & Bolles, 1979）の手続きを項目から組み立て、JSON にできる辞書に変換して戻し、必須の項目が欠けたときの挙動を見ます。
+ABA リニューアル (Bouton & Bolles, 1979) の手続きを項目から組み立て、JSON にできる辞書に変換して戻し、必須の項目が欠けたときの挙動を見ます。
 
 ```python
 import json
@@ -51,7 +51,7 @@ except MissingFieldError as error:
     print(error)  # missing required keyword(s) for Renewal: ['test_context']
 ```
 
-`parse_primitive` は変更できないデータクラス（この例では `contingency_respondent_dsl.ast.Renewal`）を返します。未知の手続き名は `UnknownPrimitiveError`、位置引数は `ArityError`、想定外の項目は `UnknownFieldError` になります。時間は `{"value": 15, "unit": "s"}` か `(15, "s")` の形で書きます。値が正でない場合や、単位が `ms`・`s`・`min`・`h` 以外の場合は `ValueError` になります。
+`parse_primitive` は変更できないデータクラス (この例では `contingency_respondent_dsl.ast.Renewal`) を返します。未知の手続き名は `UnknownPrimitiveError`、位置引数は `ArityError`、想定外の項目は `UnknownFieldError` になります。時間は `{"value": 15, "unit": "s"}` か `(15, "s")` の形で書きます。値が正でない場合や、単位が `ms`・`s`・`min`・`h` 以外の場合は `ValueError` になります。
 
 ## 手続き
 
@@ -68,7 +68,7 @@ except MissingFieldError as error:
 
 ## contingency-dsl との関係
 
-contingency-dsl のレスポンデントのレイヤは小さく保たれていて、対提示（`Pair.*`）、`Extinction`、`CSOnly`、`USOnly`、`Contingency`、`TrulyRandom`、`ExplicitlyUnpaired`、`Compound`、`Serial`、`ITI`、`Differential`（「Tier A」のプリミティブ）だけを持ちます。これらを複数のフェーズにわたって組み合わせる手続き（上の表の手続き。「Tier B」のプリミティブ）は、Core のレスポンデント文法にある 1 つの拡張点を通じて追加され、その文法は変更しません。
+contingency-dsl のレスポンデントのレイヤは小さく保たれていて、対提示 (`Pair.*`)、`Extinction`、`CSOnly`、`USOnly`、`Contingency`、`TrulyRandom`、`ExplicitlyUnpaired`、`Compound`、`Serial`、`ITI`、`Differential` (「Tier A」のプリミティブ) だけを持ちます。これらを複数のフェーズにわたって組み合わせる手続き (上の表の手続き。「Tier B」のプリミティブ) は、Core のレスポンデント文法にある 1 つの拡張点を通じて追加され、その文法は変更しません。
 
 ```ebnf
 ExtensionRespondentPrimitive ::= Identifier "(" ArgList? ")"
@@ -78,14 +78,14 @@ ExtensionRespondentPrimitive ::= Identifier "(" ArgList? ")"
 
 ## このリポジトリの中身
 
-- `spec/en/`、`spec/ja/`: 仕様（アーキテクチャ、Core への差し込み方、文法、理論、手続きごとのページ）
-- `schema/`: 手続きの EBNF 文法（`grammar.ebnf`）、レコードの JSON Schema（`ast.schema.json`）、プログラムがこの拡張を読み込む方法（`extension-registry.md`）
+- `spec/en/`、`spec/ja/`: 仕様 (アーキテクチャ、Core への差し込み方、文法、理論、手続きごとのページ)
+- `schema/`: 手続きの EBNF 文法 (`grammar.ebnf`)、レコードの JSON Schema (`ast.schema.json`)、プログラムがこの拡張を読み込む方法 (`extension-registry.md`)
 - `conformance/tier-b/`: 手続きごとに 1 個のファイルにテストケース。各ケースに入力文字列と期待されるレコードがあります
-- `src/contingency_respondent_dsl/`: Python のパッケージ（`parse_primitive`、`to_dict`、`from_dict`、`register`）
+- `src/contingency_respondent_dsl/`: Python のパッケージ (`parse_primitive`、`to_dict`、`from_dict`、`register`)
 
 ## 制限
 
-- このパッケージは DSL のテキストを読みません。手続き名と、評価済みの項目から始めます。`Renewal(acquisition = ..., ...)` のようなテキストを読むのは Core のパーサ [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py) の役目です。contingency-dsl-py はこれらの識別子を構文解析せず、`TierBExtension` はそのままでは contingency-dsl-py の `ExtensionRegistry` に渡せない（`annotation_keywords` を持たない）ため、2 つのパッケージを組み合わせてもテキストから最後まで読むことはできません。
+- このパッケージは DSL のテキストを読みません。手続き名と、評価済みの項目から始めます。`Renewal(acquisition = ..., ...)` のようなテキストを読むのは Core のパーサ [contingency-dsl-py](https://github.com/OperantKit/contingency-dsl-py) の役目です。contingency-dsl-py はこれらの識別子を構文解析せず、`TierBExtension` はそのままでは contingency-dsl-py の `ExtensionRegistry` に渡せない (`annotation_keywords` を持たない) ため、2 つのパッケージを組み合わせてもテキストから最後まで読むことはできません。
 - 手続きを記述するだけで、セッションを実行したり条件づけをシミュレーションしたりはしません。
 - `LatentExtinction` と `PavlovianPREE` の主要な出典は、[一覧](spec/ja/tier-b-primitives/_index.md) で確認が必要と記されています。
 
